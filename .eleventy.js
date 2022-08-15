@@ -1,8 +1,49 @@
-const { DateTime }  = require('luxon');
-const util          = require('util');
+const { DateTime } = require('luxon');
+const util = require('util');
 
-module.exports = function(eleventyConfig) {
+const {
+  fortawesomeFreeRegularPlugin,
+} = require('@vidhill/fortawesome-free-regular-11ty-shortcode');
 
+const readingTime = require('eleventy-plugin-reading-time');
+
+const readerBar = require('eleventy-plugin-reader-bar');
+
+const markdownIt = require('markdown-it');
+const markdownItAnchor = require('markdown-it-anchor');
+const markdownItHighlightJS = require('markdown-it-highlightjs');
+
+const pluginTOC = require('eleventy-plugin-toc');
+
+const mdOptions = {
+  html: true,
+  breaks: true,
+  linkify: true,
+  typographer: true
+}
+const mdAnchorOpts = {
+  permalink: true,
+  permalinkClass: 'anchor-link',
+  permalinkSymbol: '#',
+  level: [1, 2, 3, 4]
+}
+
+module.exports = function (eleventyConfig) {
+
+  // Customized by Danilo Avilez
+  eleventyConfig.setLibrary(
+    'md',
+    markdownIt(mdOptions)
+      .use(markdownItAnchor, mdAnchorOpts)
+      .use(markdownItHighlightJS)
+  );
+
+  eleventyConfig.addPlugin(pluginTOC);
+
+  eleventyConfig.addPlugin(fortawesomeFreeRegularPlugin);
+  eleventyConfig.addPlugin(readingTime);
+
+  eleventyConfig.addPlugin(readerBar);
 
   // Layout aliases for convenience
   eleventyConfig.addLayoutAlias('default', 'layouts/base.njk');
@@ -26,14 +67,14 @@ module.exports = function(eleventyConfig) {
   });
 
   // Grab excerpts and sections from a file
-  eleventyConfig.addFilter("section", require("./src/utils/section.js") );
+  eleventyConfig.addFilter("section", require("./src/utils/section.js"));
 
   // compress and combine js files
-  eleventyConfig.addFilter("jsmin", require("./src/utils/minify-js.js") );
+  eleventyConfig.addFilter("jsmin", require("./src/utils/minify-js.js"));
 
   // minify the html output when running in prod
   if (process.env.NODE_ENV == "production") {
-    eleventyConfig.addTransform("htmlmin", require("./src/utils/minify-html.js") );
+    eleventyConfig.addTransform("htmlmin", require("./src/utils/minify-html.js"));
   }
 
   // Static assets to pass through
@@ -41,16 +82,16 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("./src/site/images");
   eleventyConfig.addPassthroughCopy("./src/site/css");
 
-  return  {
+  return {
     dir: {
       input: "src/site",
       includes: "_includes",
       output: "dist"
     },
     passthroughFileCopy: true,
-    templateFormats : ["njk", "md"],
-    htmlTemplateEngine : "njk",
-    markdownTemplateEngine : "njk",
+    templateFormats: ["njk", "md"],
+    htmlTemplateEngine: "njk",
+    markdownTemplateEngine: "njk",
   };
 
 };

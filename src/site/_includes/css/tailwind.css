@@ -1,5 +1,5 @@
 /* purgecss start ignore */
-@tailwind  base;
+@tailwind base;
 /* purgecss end ignore */
 
 /*
@@ -9,6 +9,7 @@ section {
   @apply pb-10;
   @apply px-4;
 }
+
 p+p {
   @apply mt-4;
 }
@@ -19,9 +20,9 @@ p+p {
 h1.heading {
   @apply text-3xl;
   @apply text-gray-900;
-  @apply mb-4;
   @apply font-semibold;
 }
+
 @screen md {
   h1.heading {
     @apply text-3xl;
@@ -35,11 +36,13 @@ a {
   @apply border-b-2;
   @apply border-teal-400;
 }
+
 a:hover,
 a:focus {
- @apply border-b-2;
- @apply border-teal-200;
+  @apply border-b-2;
+  @apply border-teal-200;
 }
+
 a.naked-link:link,
 a.naked-link:visited {
   @apply border-0;
@@ -49,10 +52,12 @@ a.naked-link:visited {
 .content ol {
   @apply my-6;
 }
+
 .content li {
   @apply list-disc;
   @apply ml-6;
 }
+
 .content ol li {
   @apply list-decimal;
   @apply pl-2;
@@ -77,6 +82,7 @@ code {
   @apply border-b-0;
   @apply rounded;
 }
+
 .nav-tab:hover {
   @apply bg-white;
   @apply text-teal-500;
@@ -91,12 +97,13 @@ code {
 .mb--2 {
   margin-bottom: -0.5rem;
 }
+
 .mb--4 {
   margin-bottom: -1rem;
 }
 
 /* purgecss start ignore */
-@tailwind  components;
+@tailwind components;
 /* purgecss end ignore */
 
 @tailwind utilities;
