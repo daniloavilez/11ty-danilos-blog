@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+    <title>Kafka Notes</title>
+    <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="daniloavilez" />
+<meta name="twitter:creator" content="@danilo_avilez" />
+<meta property="og:url" content="https://avilez.com.br/" />
+<meta property="og:title" content="Danilo Avilez" />
+
+  </head>
+  <body class="container mx-auto mb-12 lg:max-w-4xl text-gray-700">
+    <div class="reader-bar-start">
+      
+<header class="bg-teal-500 flex justify-between px-4 py-2 mb-10">
+  <h1 class=" text-white font-medium text-2xl"><a href="/" class="">Danilo Avilez</a></h1>
+  
+  
+    <nav>
+      
+      
+<ul class="flex items-row">
+  
+    <li class="pr-1">
+      <a href="/about" class="nav-tab" target="_self">
+        
+          About
+        
+      </a>
+    </li>
+  
+    <li class="pr-1">
+      <a href="/blog" class="nav-tab" target="_self">
+        
+          Blog
+        
+      </a>
+    </li>
+  
+</ul>
+
+    </nav>
+  
+</header>
+
+
+
+
+      <div class="content leading-relaxed">
+        <section>
+  <time value="" class="text-gray-600">January 9, 2019</time>
+  <h1 class="heading">Kafka Notes</h1>
+  <div class="mb-2 text-sm text-gray-600">
+    About 6 min reading time
+  </div>
+  <hr>
+  <aside class="mb-2">
+    <nav class="toc" >
+        <ol><li><a href="#creating-a-topic">Creating a topic</a></li><li><a href="#partitions">Partitions</a></li><li><a href="#replicas">Replicas</a></li><li><a href="#geo-replication">Geo-Replication</a></li><li><a href="#producers">Producers</a><ol><li><a href="#safe-and-high-throughput-producer">Safe and High Throughput Producer</a><ol><li><a href="#safe">Safe</a></li><li><a href="#high-throughput">High Throughput</a></li></ol></li></ol></li><li><a href="#queue-vs-pub%2Fsub">Queue Vs Pub/Sub</a></li><li><a href="#kafka-as-a-storage-system">Kafka as a Storage System</a></li><li><a href="#consumer-group">Consumer Group</a></li><li><a href="#stream-api">Stream API</a></li><li><a href="#kafka-connect">Kafka Connect</a><ol><li><a href="#kafka-stream">Kafka Stream</a><ol><li><a href="#kstream-and-ktable">KStream and KTable</a></li><li><a href="#serde-(avro)">SerDe (Avro)</a></li></ol></li></ol></li><li><a href="#strategy-consumer">Strategy Consumer</a><ol><li><a href="#message-delivery-guarantees">Message Delivery Guarantees</a></li></ol></li></ol>
+      </nav>
+  </aside>
+  <hr>
+  <article class="mt-4">
+    <p>My notes for Kafka</p>
+<!--more-->
+<h2 id="creating-a-topic" tabindex="-1">Creating a topic <a class="anchor-link" href="#creating-a-topic">#</a></h2>
+<pre><code class="hljs language-bash">bin/kafka-create-topics.sh --zookeeper zookeeper:2181 --create --topic first-topic --partitions 2 --replication-factor 2
+<p>or</p>
+<p>bin/kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 3 --partitions 1 --topic my-repl-topic<br>
+</code></pre></p>
+<h1 id="offset" tabindex="-1">Offset <a class="anchor-link" href="#offset">#</a></h1>
+<p><code>Offset</code> is the number used per message in a partition.</p>
+<p><img src="https://kafka.apache.org/21/images/log_consumer.png" alt="Kafka Offset"></p>
+<h1 id="partitions-and-replicas" tabindex="-1">Partitions and Replicas <a class="anchor-link" href="#partitions-and-replicas">#</a></h1>
+<h2 id="partitions" tabindex="-1">Partitions <a class="anchor-link" href="#partitions">#</a></h2>
+<p>Partitions: A single piece of a Kafka topic. The number of partitions is configurable on a per topic basis. More partitions allow for great parallelism when reading from the topics. The number of partitions determines how many consumers you have in a consumer-group. For example, if a topic has 3 partitions, you can have 3 consumers in a consumer-group balancing consuming between the partitions. In this way you have a parallelism of 3. This partition number is somewhat hard to determine until you know how fast you are producing data and how fast you are consuming the data. If you have a topic that you know will be high volume, you will need to have more partitions. Note however that there cannot be more consumer instances in a consumer group (N consumers inside a consumer group) than partitions.</p>
+<h2 id="replicas" tabindex="-1">Replicas <a class="anchor-link" href="#replicas">#</a></h2>
+<p>Replicas: These are copies of the partitions. They are never written to or read. Their only purpose is for data redundancy. If your topic has n replicas, n-1 brokers can fail before there is any data loss. Additionally, you cannot have a topic a replication factor greater than the number of brokers that you have. For example, you have 5 Kafka brokers, you could have a topic with a maximum replication factor of 5, and 5-1=4 brokers could go down before there is any data loss.</p>
+<p><img src="https://sookocheff.com/post/kafka/kafka-in-a-nutshell/producing-to-partitions.png" alt="Kafka Partition and Replicas"></p>
+<h2 id="geo-replication" tabindex="-1">Geo-Replication <a class="anchor-link" href="#geo-replication">#</a></h2>
+<p>Kafka MirrorMaker provides geo-replication support for your clusters. With MirrorMaker, messages are replicated across multiple datacenters or cloud regions. You can use this in active/passive scenarios for backup and recovery; or in active/active scenarios to place data closer to your users, or support data locality requirements.</p>
+<h2 id="producers" tabindex="-1">Producers <a class="anchor-link" href="#producers">#</a></h2>
+<p>Producers publish data to the topics of their choice. The producer is responsible for choosing which record to assign to which partition within the topic. This can be done in a round-robin fashion simply to balance load or it can be done according to some semantic partition function (say based on some key in the record). More on the use of partitioning in a second!</p>
+<h3 id="safe-and-high-throughput-producer" tabindex="-1">Safe and High Throughput Producer <a class="anchor-link" href="#safe-and-high-throughput-producer">#</a></h3>
+<h4 id="safe" tabindex="-1">Safe <a class="anchor-link" href="#safe">#</a></h4>
+<p>Some configurations that make producer safe.</p>
+<p>For <code>Kafka &gt;= 0.11</code>:<br>
+- <code>enable.idempotence=true</code> (producer level) + <code>min.insync.replicas=2</code> (broker/topic level)<br>
+- Implies <code>acks=all,retries=MAX_INT,max.in.flight.requests.per.connection=5</code> (default)<br>
+- While keeping ordering guarantees and improving performance!</p>
+<p><code>Safe producer</code> may impact throughput and latency.</p>
+<h4 id="high-throughput" tabindex="-1">High Throughput <a class="anchor-link" href="#high-throughput">#</a></h4>
+<ul>
+<li>For <code>COMPRESSION</code> we can choose between <code>none</code> (default), <code>snappy</code>, <code>lz4</code> and <code>gzip</code></li>
+<li>For <code>LINGER_MS</code> we can wait for <code>20 ms</code> meanwhile it collects the message and compress</li>
+<li>For <code>BATCH_SIZE</code> we can use use up to <code>32 KB</code> batch size</li>
+</ul>
+<p><img src="../../images/kafka_compression.png" alt=""></p>
+<h2 id="queue-vs-pub%2Fsub" tabindex="-1">Queue Vs Pub/Sub <a class="anchor-link" href="#queue-vs-pub%2Fsub">#</a></h2>
+<p>Messaging traditionally has two models: queuing and publish-subscribe. In a queue, a pool of consumers may read from a server and each record goes to one of them; in publish-subscribe the record is broadcast to all consumers. Each of these two models has a strength and a weakness. The strength of queuing is that it allows you to divide up the processing of data over multiple consumer instances, which lets you scale your processing. Unfortunately, queues aren’t multi-subscriber—once one process reads the data it’s gone. Publish-subscribe allows you broadcast data to multiple processes, but has no way of scaling processing since every message goes to every subscriber.</p>
+<p>The advantage of Kafka’s model is that every topic has both these properties—it can scale processing and is also multi-subscriber—there is no need to choose one or the other. Through the concept of consumer group it’s easy to have both of them.</p>
+<h2 id="kafka-as-a-storage-system" tabindex="-1">Kafka as a Storage System <a class="anchor-link" href="#kafka-as-a-storage-system">#</a></h2>
+<p>Data written to Kafka is written to disk and replicated for fault-tolerance. Kafka allows producers to wait on acknowledgement so that a write isn’t considered complete until it is fully replicated and guaranteed to persist even if the server written to fails.</p>
+<h2 id="consumer-group" tabindex="-1">Consumer Group <a class="anchor-link" href="#consumer-group">#</a></h2>
+<p>When to use the same consumer group?</p>
+<p>Consumers should be part of the same group, when the consumer performing an operation needs to be scaled up to process in parallel. Consumers part of the same group would be assigned with different partitions. As said before, no two consumers of the same group-id would get assigned to the same partition. Hence, each consumer part of a group would be processing different data than the other consumers within the same group. Leading to parallel processing. This is one of the ways suggested by Kafka to achieve parallel processing in consumers.</p>
+<p><img src="../../images/kafka_consumer_group.png" alt="Kafka Consumer Group"></p>
+<p>How would the offsets be maintained for consumers of different groups?</p>
+<p>Offset, an indicator of how many messages has been read by a consumer, would be maintained per consumer group-id and partition. When there are two different consumer groups, 2 different offsets would be maintained per partition. Consumers of different consumer groups can resume/pause independent of the other consumer groups. Hence, leaving no dependency between the consumers of different groups.</p>
+<p>Q. What if consumer-B goes down?<br>
+A. Kafka will do rebalancing and it would assign all the four partitions to consumer-A.</p>
+<p>Q. What if new consumers, consumer-C and consumer-D starts consuming with the same group-id “app-db-updates-consumer”?<br>
+A. Kafka will do rebalancing again and it would assign each consumer with one partition equally.</p>
+<p>Q. What if a new consumer, consumer-E joins with the same group-id “app-db-updates-consumer”. This totals to 5 consumers, where the partitions are 4?<br>
+A. Kafka will assign 4 consumers with 1 partition each and one consumer out of 5 will be idle.</p>
+<p>Q. Can Kafka assign the same partition to two consumers?<br>
+A. Kafka can’t assign the same partition to two consumers within the same group. What about different consumer groups then? Partitions are only divided among the consumers of same group. This means Kafka will assign the same partitions to two consumers of different groups.</p>
+<p>Q. What is the optimum number of consumers within the same group?<br>
+A. Number of consumers within a group can at max be as many number of partitions. Kafka can at max assign one partition to one consumer. If there are more number of consumers than the partitions, Kafka would fall short of the partitions to assign to the consumers. Not all the consumers of the group would get assigned to a partition and hence some of the consumers of the group would be idle.</p>
+<h2 id="stream-api" tabindex="-1">Stream API <a class="anchor-link" href="#stream-api">#</a></h2>
+<p>The messages sent to the Stream API are key and value (key can be string and value a counter or integer).</p>
+<h2 id="kafka-connect" tabindex="-1">Kafka Connect <a class="anchor-link" href="#kafka-connect">#</a></h2>
+<p>Can connect with relational database to mirror data from them (examples are Oracle DB, SQL Server, MySql, Postgre, syslog), also can sink back to them (examples are Hadoop, elasticsearch, S3, Google BigQuery, Oracle, Postgre)</p>
+<h3 id="kafka-stream" tabindex="-1">Kafka Stream <a class="anchor-link" href="#kafka-stream">#</a></h3>
+<h4 id="kstream-and-ktable" tabindex="-1">KStream and KTable <a class="anchor-link" href="#kstream-and-ktable">#</a></h4>
+<p><code>KStream</code> is where we receive a sequence of events, like ATM events, clickpages and visits to a web page.</p>
+<p><code>KTable</code> is the last update made by these events.</p>
+<p>So in a system of payments between banks.</p>
+<p>Supposing Bob has $200 in his account and Monica has $50.</p>
+<p>We receive an event where Bob is sending $100 to Monica, after that, Monica sends back $50 to Bob because he made a mistake.</p>
+<p>So 2 events will be received:</p>
+<ul>
+<li>Bob sends $100 to Monica (KTable will show that Bob will have $100 while Monica will have $150)</li>
+<li>Monica sends back $50 to Bob (KTable will show that Bob will have $150 and Monica will have $100)</li>
+</ul>
+<p><code>KStream</code> will have the changelog above while <code>KTable</code> is the actual state.</p>
+<p>If we do <code>KSQL</code> into <code>KStream</code> we can see all the changelog since the beginning, while on <code>KTable</code> will show the most updated situation of the client.</p>
+<h4 id="serde-(avro)" tabindex="-1">SerDe (Avro) <a class="anchor-link" href="#serde-(avro)">#</a></h4>
+<p>We can use Ser (Serialize) De (Deserialize) to convert bytes of the record to a specific type. For java interpret and create an java object easiely.</p>
+<h2 id="strategy-consumer" tabindex="-1">Strategy Consumer <a class="anchor-link" href="#strategy-consumer">#</a></h2>
+<h3 id="message-delivery-guarantees" tabindex="-1">Message Delivery Guarantees <a class="anchor-link" href="#message-delivery-guarantees">#</a></h3>
+<ul>
+<li>At most once - Messages may be lost but are never redelivered</li>
+<li>At least once - Messages are never lost but may be redelivered</li>
+<li>Exactly once - this is what people actually want, each message is delivered once and only once</li>
+</ul>
+<p>Let’s say the consumer reads some messages – it has several options for processing the messages and updating its position.</p>
+<ol>
+<li>
+<p>It can read the messages, then save its position in the log, and finally process the messages. In this case there is a possibility that the consumer process crashes after saving its position but before saving the output of its message processing. In this case the process that took over processing would start at the saved position even though a few messages prior to that position had not been processed. This corresponds to “at-most-once” semantics as in the case of a consumer failure messages may not be processed.</p>
+</li>
+<li>
+<p>It can read the messages, process the messages, and finally save its position. In this case there is a possibility that the consumer process crashes after processing messages but before saving its position. In this case when the new process takes over the first few messages it receives will already have been processed. This corresponds to the “at-least-once” semantics in the case of consumer failure. In many cases messages have a primary key and so the updates are idempotent (receiving the same message twice just overwrites a record with another copy of itself).</p>
+</li>
+</ol>
+<h1 id="references" tabindex="-1">References <a class="anchor-link" href="#references">#</a></h1>
+<p><a href="https://sookocheff.com/post/kafka/kafka-in-a-nutshell/">Kafka in a nutshell</a></p>
+<p><a href="https://stackoverflow.com/questions/27150925/what-is-difference-between-partition-and-replica-of-a-topic-in-kafka-cluster">what is difference between partition and replica of a topic in kafka cluster</a></p>
+<p><a href="https://www.youtube.com/watch?v=Ai4n_NcKLZQ">Kafka Consumer Group</a></p>
+<p><a href="https://www.confluent.io/online-talks/atm-fraud-detection-with-apache-kafka-and-ksql/">ATM fraud detection with apache kafka and KSQL</a></p>
+  </article>
+  <!-- up button -->
+  <div>
+    <button
+      id="upBtn"
+      aria-label="go to top"
+      style="position:fixed; width:32px; height:32px; border-radius:50%; border:none; background-color:black; right:32px; bottom:32px; color:white; focus:outline-none; cursor:pointer; transition-duration:500ms; opacity:0; pointer-events:none;"
+    ><i class="arrow up"></i></button>
+  </div>
+  <style>
+  .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  </style>
+  <script>
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 250) {
+      upBtn.style.opacity = 1;
+      upBtn.style.pointerEvents = 'auto';     
+    }
+    else {
+      upBtn.style.opacity = 0;
+      upBtn.style.pointerEvents = 'none';
+    }
+  })
+
+  upBtn.addEventListener('click', () => {
+    let start = document.querySelector('.reader-bar-start')
+    start.scrollIntoView({behavior: "smooth"})
+  })
+  </script>
+  <!-- reader bar -->
+  <div id="readerBarContainer" style="height:4px;width:100%;background-color:#fff;position:fixed;top:0px;left:0;z-index:100;transition:0.2s;">
+    <div id="readerBar" style="height:4px;width:0;background-color:rgb(20 184 166);position:fixed;top:0px;left:0;z-index:200;transition:0.2s;"></div>
+  </div>
+  <script>
+    let winH = window.innerHeight;
+    const content = document.querySelector('.reader-bar-start');
+
+    let contentH = content.offsetHeight;
+    let contentS = contentH - winH;
+    let readerBar = document.getElementById('readerBar');
+    window.addEventListener('load', () => {
+      document.addEventListener ('scroll', updateBar);
+    })
+    window.addEventListener('resize', redefine)
+
+    function redefine() {
+      winH = window.innerHeight;
+      contentH = content.offsetHeight;
+      contentS = contentH - winH;
+      updateBar();
+    }
+
+    function updateBar() {
+      const pagePos = window.scrollY; 
+      const updatedBar = pagePos * 100 / contentS;
+      readerBar.style.width = updatedBar + "%";
+    }
+  </script>
+  <div class="mt-12 pt-4 text-gray-600 text-sm border-t border-gray-300">
+    <p>
+      This page is part of the <a href="/blog">blog</a> section.
+    </p>
+  </div>
+</section>
+
+      </div>
+      
+      <script>function btnHandler(e,n){e=document.querySelector(e);e&&e.addEventListener("click",function(e){e.preventDefault(),n()},!1)}btnHandler(".btn-log",function(){console.log("👋 Oh, hello there you!")});</script>
+    </div>
+  </body>
+</html>
+
+
+

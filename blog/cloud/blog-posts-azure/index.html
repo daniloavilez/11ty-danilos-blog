@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+    <title>Azure Web Services</title>
+    <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="daniloavilez" />
+<meta name="twitter:creator" content="@danilo_avilez" />
+<meta property="og:url" content="https://avilez.com.br/" />
+<meta property="og:title" content="Danilo Avilez" />
+
+  </head>
+  <body class="container mx-auto mb-12 lg:max-w-4xl text-gray-700">
+    <div class="reader-bar-start">
+      
+<header class="bg-teal-500 flex justify-between px-4 py-2 mb-10">
+  <h1 class=" text-white font-medium text-2xl"><a href="/" class="">Danilo Avilez</a></h1>
+  
+  
+    <nav>
+      
+      
+<ul class="flex items-row">
+  
+    <li class="pr-1">
+      <a href="/about" class="nav-tab" target="_self">
+        
+          About
+        
+      </a>
+    </li>
+  
+    <li class="pr-1">
+      <a href="/blog" class="nav-tab" target="_self">
+        
+          Blog
+        
+      </a>
+    </li>
+  
+</ul>
+
+    </nav>
+  
+</header>
+
+
+
+
+      <div class="content leading-relaxed">
+        <section>
+  <time value="" class="text-gray-600">September 22, 2020</time>
+  <h1 class="heading">Azure Web Services</h1>
+  <div class="mb-2 text-sm text-gray-600">
+    About 2 min reading time
+  </div>
+  <hr>
+  <aside class="mb-2">
+    <nav class="toc" >
+        <ol><li><a href="#authentication">Authentication</a></li><li><a href="#host">Host</a></li><li><a href="#security">Security</a></li><li><a href="#databases">Databases</a></li><li><a href="#storage">Storage</a></li><li><a href="#networking">Networking</a></li><li><a href="#devops">DevOps</a></li><li><a href="#observability">Observability</a></li><li><a href="#containers">Containers</a></li><li><a href="#integration">Integration</a></li><li><a href="#more-links">More links</a></li></ol>
+      </nav>
+  </aside>
+  <hr>
+  <article class="mt-4">
+    <p>My notes for Aure Cloud</p>
+<!--more-->
+<p>Watch it later <a href="https://www.youtube.com/watch?v=4BwyqmRTrx8">https://www.youtube.com/watch?v=4BwyqmRTrx8</a></p>
+<h2 id="authentication" tabindex="-1">Authentication <a class="anchor-link" href="#authentication">#</a></h2>
+<p><strong>Azure Active Directory</strong> = identity service provides single sign-on and multi-factor authentication <a href="https://azure.microsoft.com/en-us/services/active-directory/#overview">Azure AD</a></p>
+<h2 id="host" tabindex="-1">Host <a class="anchor-link" href="#host">#</a></h2>
+<p><strong>Azure DNS</strong> = host your Domain Name System (DNS) domains in Azure <a href="https://azure.microsoft.com/en-us/services/dns/#overview">Azure DNS</a></p>
+<h2 id="security" tabindex="-1">Security <a class="anchor-link" href="#security">#</a></h2>
+<p><strong>Azure Key Vault</strong> = Safeguard cryptographic keys and other secrets used by cloud apps and services <a href="https://azure.microsoft.com/en-us/services/key-vault/#overview">Azure Key Vault</a></p>
+<p><strong>Web Application Firewall (WAF)</strong> = Help protect your web apps from malicious attacks and common web vulnerabilities - OWASP Top 10 <a href="https://azure.microsoft.com/en-us/services/web-application-firewall/#overview">WAF</a></p>
+<p><strong>DDoS Protection</strong> = <a href="https://azure.microsoft.com/en-us/services/ddos-protection/">DDoS Protection</a></p>
+<h2 id="databases" tabindex="-1">Databases <a class="anchor-link" href="#databases">#</a></h2>
+<p>TODO</p>
+<h2 id="storage" tabindex="-1">Storage <a class="anchor-link" href="#storage">#</a></h2>
+<p><strong>Blob Storage</strong> = helps you create data lakes for your analytics needs, and provides storage to build powerful cloud-native and mobile apps <a href="https://azure.microsoft.com/en-us/services/storage/blobs/#overview">Blob Storage</a></p>
+<h2 id="networking" tabindex="-1">Networking <a class="anchor-link" href="#networking">#</a></h2>
+<p><strong>Application Gateway</strong> = Build secure, scalable, highly available web front ends in Azure <a href="https://azure.microsoft.com/en-us/services/application-gateway/">App Gateway</a> Used for deliver <strong><strong>regional</strong></strong> web apps. Layer 7 = Application Layer. HTTP, HTTPS, HTTP/2</p>
+<p><strong>FrontDoor</strong> = Secure, fast, and reliable cloud CDN with intelligent threat protection <a href="https://azure.microsoft.com/en-us/services/frontdoor/">FrontDoor</a>. Used for deliver <strong><strong>global</strong></strong> web apps. Layer 7 = Application Layer. HTTP, HTTPS, HTTP/2</p>
+<p><strong>Azure Load Balancer</strong> = Build high-availability and network performance. Used for deliver either for <strong><strong>global</strong></strong> web apps or <strong><strong>regional</strong></strong> web apps. Layer 4 = Network Layer. TCP/UDP</p>
+<h2 id="devops" tabindex="-1">DevOps <a class="anchor-link" href="#devops">#</a></h2>
+<p><strong>Azure DevOps</strong> = Include many tools like <code>Azure Boards</code>, <code>Azure Repos</code>, <code>Azure Pipelines</code> and etc. <a href="https://azure.microsoft.com/en-us/services/devops/#overview">Azure DevOps</a></p>
+<h2 id="observability" tabindex="-1">Observability <a class="anchor-link" href="#observability">#</a></h2>
+<p><strong>Azure Monitor</strong> = Collect, analyze, and act on telemetry data from your Azure and on-premises environments <a href="https://azure.microsoft.com/en-us/services/monitor/#overview">Azure Monitor</a></p>
+<p><strong>App Insights</strong> is a feature of <code>Azure Monitor</code> is an extensible Application Performance Management (APM) service for developers and DevOps professionals. <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview">More info</a></p>
+<p><img src="https://docs.microsoft.com/en-us/azure/azure-monitor/app/media/app-insights-overview/diagram.png" alt="App Insights"></p>
+<h2 id="containers" tabindex="-1">Containers <a class="anchor-link" href="#containers">#</a></h2>
+<p><strong>Azure Kubernetes Service (AKS)</strong> = Build and scale with managed Kubernetes <a href="https://azure.microsoft.com/en-us/services/kubernetes-service/">AKS</a></p>
+<p><strong>Container Registry</strong> = Build, store, secure, scan, replicate, and manage container images and artifacts with a fully managed, geo-replicated instance of OCI distribution <a href="https://azure.microsoft.com/en-us/services/container-registry/">Container Registry</a></p>
+<h2 id="integration" tabindex="-1">Integration <a class="anchor-link" href="#integration">#</a></h2>
+<p><strong>API Management</strong> = Publish APIs to developers, partners, and employees securely and at scale <a href="https://azure.microsoft.com/en-us/services/api-management/">API Management</a></p>
+<h2 id="more-links" tabindex="-1">More links <a class="anchor-link" href="#more-links">#</a></h2>
+<p>Price calculator = <a href="https://azure.microsoft.com/pt-br/pricing/calculator/">https://azure.microsoft.com/pt-br/pricing/calculator/</a></p>
+<p>Well-Architected Framework = <a href="https://docs.microsoft.com/en-us/azure/architecture/framework/">https://docs.microsoft.com/en-us/azure/architecture/framework/</a></p>
+<p>Azure services list = <a href="https://azure.microsoft.com/en-us/services/">https://azure.microsoft.com/en-us/services/</a></p>
+  </article>
+  <!-- up button -->
+  <div>
+    <button
+      id="upBtn"
+      aria-label="go to top"
+      style="position:fixed; width:32px; height:32px; border-radius:50%; border:none; background-color:black; right:32px; bottom:32px; color:white; focus:outline-none; cursor:pointer; transition-duration:500ms; opacity:0; pointer-events:none;"
+    ><i class="arrow up"></i></button>
+  </div>
+  <style>
+  .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  </style>
+  <script>
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 250) {
+      upBtn.style.opacity = 1;
+      upBtn.style.pointerEvents = 'auto';     
+    }
+    else {
+      upBtn.style.opacity = 0;
+      upBtn.style.pointerEvents = 'none';
+    }
+  })
+
+  upBtn.addEventListener('click', () => {
+    let start = document.querySelector('.reader-bar-start')
+    start.scrollIntoView({behavior: "smooth"})
+  })
+  </script>
+  <!-- reader bar -->
+  <div id="readerBarContainer" style="height:4px;width:100%;background-color:#fff;position:fixed;top:0px;left:0;z-index:100;transition:0.2s;">
+    <div id="readerBar" style="height:4px;width:0;background-color:rgb(20 184 166);position:fixed;top:0px;left:0;z-index:200;transition:0.2s;"></div>
+  </div>
+  <script>
+    let winH = window.innerHeight;
+    const content = document.querySelector('.reader-bar-start');
+
+    let contentH = content.offsetHeight;
+    let contentS = contentH - winH;
+    let readerBar = document.getElementById('readerBar');
+    window.addEventListener('load', () => {
+      document.addEventListener ('scroll', updateBar);
+    })
+    window.addEventListener('resize', redefine)
+
+    function redefine() {
+      winH = window.innerHeight;
+      contentH = content.offsetHeight;
+      contentS = contentH - winH;
+      updateBar();
+    }
+
+    function updateBar() {
+      const pagePos = window.scrollY; 
+      const updatedBar = pagePos * 100 / contentS;
+      readerBar.style.width = updatedBar + "%";
+    }
+  </script>
+  <div class="mt-12 pt-4 text-gray-600 text-sm border-t border-gray-300">
+    <p>
+      This page is part of the <a href="/blog">blog</a> section.
+    </p>
+  </div>
+</section>
+
+      </div>
+      
+      <script>function btnHandler(e,n){e=document.querySelector(e);e&&e.addEventListener("click",function(e){e.preventDefault(),n()},!1)}btnHandler(".btn-log",function(){console.log("👋 Oh, hello there you!")});</script>
+    </div>
+  </body>
+</html>
+
+
+

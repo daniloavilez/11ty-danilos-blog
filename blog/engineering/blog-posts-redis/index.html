@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+    <title>Redis Notes</title>
+    <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="daniloavilez" />
+<meta name="twitter:creator" content="@danilo_avilez" />
+<meta property="og:url" content="https://avilez.com.br/" />
+<meta property="og:title" content="Danilo Avilez" />
+
+  </head>
+  <body class="container mx-auto mb-12 lg:max-w-4xl text-gray-700">
+    <div class="reader-bar-start">
+      
+<header class="bg-teal-500 flex justify-between px-4 py-2 mb-10">
+  <h1 class=" text-white font-medium text-2xl"><a href="/" class="">Danilo Avilez</a></h1>
+  
+  
+    <nav>
+      
+      
+<ul class="flex items-row">
+  
+    <li class="pr-1">
+      <a href="/about" class="nav-tab" target="_self">
+        
+          About
+        
+      </a>
+    </li>
+  
+    <li class="pr-1">
+      <a href="/blog" class="nav-tab" target="_self">
+        
+          Blog
+        
+      </a>
+    </li>
+  
+</ul>
+
+    </nav>
+  
+</header>
+
+
+
+
+      <div class="content leading-relaxed">
+        <section>
+  <time value="" class="text-gray-600">July 16, 2019</time>
+  <h1 class="heading">Redis Notes</h1>
+  <div class="mb-2 text-sm text-gray-600">
+    About 2 min reading time
+  </div>
+  <hr>
+  <aside class="mb-2">
+    <nav class="toc" >
+        <ol><li><a href="#replication">Replication</a><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#configuration">Configuration</a></li><li><a href="#redirection-and-resharding">Redirection and resharding</a><ol><li><a href="#moved-redirection">MOVED Redirection</a></li></ol></li></ol></li><li><a href="#high-availability">High Availability</a><ol><li><a href="#redis-sentinel">Redis Sentinel</a></li></ol></li><li><a href="#references">References</a></li></ol>
+      </nav>
+  </aside>
+  <hr>
+  <article class="mt-4">
+    <p>My notes for Redis database</p>
+<!--more-->
+<h2 id="replication" tabindex="-1">Replication <a class="anchor-link" href="#replication">#</a></h2>
+<p>Redis uses the concept of <code>master-slave</code>.</p>
+<p>If master is connected to slave it keeps the replica updates by sending a stream of commands and data.</p>
+<p>If the link between master and slave is break and the connection is reestablished, it sends from the offset that connection was broke. It calls <code>Partial Resynchronization</code>.</p>
+<p>If the <code>Partial Resynchronization</code> was not possible, slave asks for a <code>Full Resynchronization</code> where master will create a snapshot of his all data and send to slave.</p>
+<p>Redis uses <code>asynchronous replication</code>, which being low latency and high performance, master does not wait for the replicas to process the stream of commands and data.</p>
+<p><code>Synchronous replication</code> can be used too using <code>WAIT</code> command, <code>WAIT</code> is only able to ensure that there are the specified number of ack copies in the other Redis instances.</p>
+<p>Redis does not have a configuration with <code>master-master</code>, which is the case of multi-DC architecture. But <a href="https://github.com/Netflix/dynomite">Dynomite</a> can solve this. <code>Dynomite</code> supports multi-DC replication and is designed for high-availability.</p>
+<h3 id="how-it-works" tabindex="-1">How it works <a class="anchor-link" href="#how-it-works">#</a></h3>
+<p>Every Redis master has a replication ID. Also each master takes an offset that increments for every byte of replication stream that it is produced to be sent to replicas. The replication offset is incremented even if no replica is actually connected.</p>
+<pre><code class="hljs language-bash">Replication ID, offset
+</code></pre>
+<p>When replicas connect to master, replicas send their old master replication ID and the offsets they processed so far. This way master can send just the incremental part needed. If master does not recognize the replication ID, it will send all the data doing a <code>Full Resynchronization</code>.</p>
+<h3 id="configuration" tabindex="-1">Configuration <a class="anchor-link" href="#configuration">#</a></h3>
+<p>To configure Redis replication is just add the following line to the replica configuration file:</p>
+<pre><code class="hljs language-bash">replicaof 192.168.1.1 6379
+</code></pre>
+<p>The IP 192.168.1.1 is reference to master IP address.</p>
+<h3 id="redirection-and-resharding" tabindex="-1">Redirection and resharding <a class="anchor-link" href="#redirection-and-resharding">#</a></h3>
+<h4 id="moved-redirection" tabindex="-1">MOVED Redirection <a class="anchor-link" href="#moved-redirection">#</a></h4>
+<p>Redis client is free to send queries to every node in the cluster, including slave nodes. The node will analyze the query, it will lookup what node is responsible for the hash slot where the key or keys (in case o multiple keys) belong.</p>
+<pre><code class="hljs language-bash">GET x
+-MOVED 3999 127.0.0.1:6381
+</code></pre>
+<h2 id="high-availability" tabindex="-1">High Availability <a class="anchor-link" href="#high-availability">#</a></h2>
+<h3 id="redis-sentinel" tabindex="-1">Redis Sentinel <a class="anchor-link" href="#redis-sentinel">#</a></h3>
+<p>Redis Sentinel provides HA for Redis.</p>
+<p>Redis Sentinel provides other collateral tasks such as monitoring, notifications and acts as a configuration provider for clients.</p>
+<ul>
+<li>Monitoring: Sentinel constantly checks if your master and replica instances are working as expected.</li>
+<li>Notification: Sentinel can notify system administrator.</li>
+<li>Automatic Failover: If a master is not working as expected, Sentinel can start a failover process where a replica is promoted to master.</li>
+<li>Configuration Provider: Sentinel acts as a source of authority for clients service discovery. Clients connect to sentinels in order to ask for the address of the current Redis master responsible for a given service.</li>
+</ul>
+<h2 id="references" tabindex="-1">References <a class="anchor-link" href="#references">#</a></h2>
+<p><a href="https://docs.bitnami.com/tutorials/deploy-redis-sentinel-production-cluster/">Redis Sentinel Cluster - K8S</a></p>
+  </article>
+  <!-- up button -->
+  <div>
+    <button
+      id="upBtn"
+      aria-label="go to top"
+      style="position:fixed; width:32px; height:32px; border-radius:50%; border:none; background-color:black; right:32px; bottom:32px; color:white; focus:outline-none; cursor:pointer; transition-duration:500ms; opacity:0; pointer-events:none;"
+    ><i class="arrow up"></i></button>
+  </div>
+  <style>
+  .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  </style>
+  <script>
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 250) {
+      upBtn.style.opacity = 1;
+      upBtn.style.pointerEvents = 'auto';     
+    }
+    else {
+      upBtn.style.opacity = 0;
+      upBtn.style.pointerEvents = 'none';
+    }
+  })
+
+  upBtn.addEventListener('click', () => {
+    let start = document.querySelector('.reader-bar-start')
+    start.scrollIntoView({behavior: "smooth"})
+  })
+  </script>
+  <!-- reader bar -->
+  <div id="readerBarContainer" style="height:4px;width:100%;background-color:#fff;position:fixed;top:0px;left:0;z-index:100;transition:0.2s;">
+    <div id="readerBar" style="height:4px;width:0;background-color:rgb(20 184 166);position:fixed;top:0px;left:0;z-index:200;transition:0.2s;"></div>
+  </div>
+  <script>
+    let winH = window.innerHeight;
+    const content = document.querySelector('.reader-bar-start');
+
+    let contentH = content.offsetHeight;
+    let contentS = contentH - winH;
+    let readerBar = document.getElementById('readerBar');
+    window.addEventListener('load', () => {
+      document.addEventListener ('scroll', updateBar);
+    })
+    window.addEventListener('resize', redefine)
+
+    function redefine() {
+      winH = window.innerHeight;
+      contentH = content.offsetHeight;
+      contentS = contentH - winH;
+      updateBar();
+    }
+
+    function updateBar() {
+      const pagePos = window.scrollY; 
+      const updatedBar = pagePos * 100 / contentS;
+      readerBar.style.width = updatedBar + "%";
+    }
+  </script>
+  <div class="mt-12 pt-4 text-gray-600 text-sm border-t border-gray-300">
+    <p>
+      This page is part of the <a href="/blog">blog</a> section.
+    </p>
+  </div>
+</section>
+
+      </div>
+      
+      <script>function btnHandler(e,n){e=document.querySelector(e);e&&e.addEventListener("click",function(e){e.preventDefault(),n()},!1)}btnHandler(".btn-log",function(){console.log("👋 Oh, hello there you!")});</script>
+    </div>
+  </body>
+</html>
+
+
+

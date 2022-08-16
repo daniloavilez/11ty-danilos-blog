@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+    <title>Kubernetes Notes</title>
+    <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="daniloavilez" />
+<meta name="twitter:creator" content="@danilo_avilez" />
+<meta property="og:url" content="https://avilez.com.br/" />
+<meta property="og:title" content="Danilo Avilez" />
+
+  </head>
+  <body class="container mx-auto mb-12 lg:max-w-4xl text-gray-700">
+    <div class="reader-bar-start">
+      
+<header class="bg-teal-500 flex justify-between px-4 py-2 mb-10">
+  <h1 class=" text-white font-medium text-2xl"><a href="/" class="">Danilo Avilez</a></h1>
+  
+  
+    <nav>
+      
+      
+<ul class="flex items-row">
+  
+    <li class="pr-1">
+      <a href="/about" class="nav-tab" target="_self">
+        
+          About
+        
+      </a>
+    </li>
+  
+    <li class="pr-1">
+      <a href="/blog" class="nav-tab" target="_self">
+        
+          Blog
+        
+      </a>
+    </li>
+  
+</ul>
+
+    </nav>
+  
+</header>
+
+
+
+
+      <div class="content leading-relaxed">
+        <section>
+  <time value="" class="text-gray-600">July 16, 2019</time>
+  <h1 class="heading">Kubernetes Notes</h1>
+  <div class="mb-2 text-sm text-gray-600">
+    About 4 min reading time
+  </div>
+  <hr>
+  <aside class="mb-2">
+    <nav class="toc" >
+        <ol><li><a href="#how-kubernetes-provisioning-an-vm-(minikube)%3F">How kubernetes provisioning an VM (minikube)?</a></li><li><a href="#install-and-set-up-kubectl-and-minikube">Install and Set up Kubectl and Minikube</a></li><li><a href="#basic-commands">Basic Commands</a><ol><li><a href="#auto-scaling">Auto-Scaling</a></li></ol></li><li><a href="#service">Service</a><ol><li><a href="#headless-service">Headless Service</a></li><li><a href="#secrets">Secrets</a></li><li><a href="#auditing">Auditing</a></li></ol></li><li><a href="#troubleshooting-commands">Troubleshooting commands</a></li><li><a href="#curious-things">Curious Things</a><ol><li><a href="#namespace-%26-resource-quotas">Namespace &amp; Resource Quotas</a></li></ol></li><li><a href="#labs">Labs</a><ol><li><a href="#helm">Helm</a></li></ol></li><li><a href="#references-%26-cheatsheets">References &amp; Cheatsheets</a></li></ol>
+      </nav>
+  </aside>
+  <hr>
+  <article class="mt-4">
+    <p>My notes for K8S</p>
+<!--more-->
+<h2 id="how-kubernetes-provisioning-an-vm-(minikube)%3F" tabindex="-1">How kubernetes provisioning an VM (minikube)? <a class="anchor-link" href="#how-kubernetes-provisioning-an-vm-(minikube)%3F">#</a></h2>
+<p>Kubernetes uses <code>libmachine</code> to provision an VM, and <code>kubeadm</code> install a Kubernetes cluster.</p>
+<p>Inside of this VM created, there are Kubernetes cluster and Docker daemon. Docker is used to pull new images from Docker Registry.</p>
+<h2 id="install-and-set-up-kubectl-and-minikube" tabindex="-1">Install and Set up Kubectl and Minikube <a class="anchor-link" href="#install-and-set-up-kubectl-and-minikube">#</a></h2>
+<p>To check if virtualization is supported on Linux, run the following command and verify that the output is non-empty:</p>
+<p><code>egrep --color 'vmx|svm' /proc/cpuinfo</code></p>
+<p><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux">Install Kubectl</a></p>
+<p><a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Installing Minikube</a></p>
+<h2 id="basic-commands" tabindex="-1">Basic Commands <a class="anchor-link" href="#basic-commands">#</a></h2>
+<p>Start minikube (Cluster)</p>
+<p><code>minikube start</code></p>
+<p>Create a deployment</p>
+<p><code>kubectl create hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080</code></p>
+<p>Expose deployment as a service</p>
+<p><code>kubectl expose deployment hello-minikube --type=NodePort</code></p>
+<p>Visualizar Pods</p>
+<p><code>kubectl get pod</code></p>
+<p>Access Service</p>
+<p><code>curl $(minikube service hello-minikube --url)</code></p>
+<p>Delete Deployment previously created</p>
+<p><code>kubectl delete deployment hello-minikube</code></p>
+<p>Stop minikube</p>
+<p><code>minikube stop</code></p>
+<p>Scale Up</p>
+<p><code>kubectl scale --replicas=4 deployment tomcat-deployment</code></p>
+<p>Scale Down</p>
+<p><code>kubectl scale --replicas=3 deployment tomcat-deployment</code></p>
+<p>Expose a Load Balancer for these replicas</p>
+<p><code>kubectl expose deployment tomcat-deployment --type=LoadBalancer --port=8080 --target-port=8080 --name=tomcat-load-balancer</code></p>
+<p>Desbribe the IPs of this load balancer</p>
+<p><code>kubectl describe services tomcat-load-balancer</code></p>
+<p>Check rollout status</p>
+<p><code>kubectl rollout status deployment tomcat-deployment</code></p>
+<p>See rollout history</p>
+<p><code>kubectl rollout history deployment/tomcat-deployment</code></p>
+<p>See revision of our deployment</p>
+<p><code>kubectl rollout history deployment/tomcat-deployment --revision=2</code></p>
+<p>Label nodes</p>
+<p><code>kubectl label node minikube storageType=ssd</code></p>
+<p>Check label after labeled it (search for Labels)</p>
+<p><code>kubectl describe node minikube</code></p>
+<p>Check services available</p>
+<p><code>kubectl get svc</code></p>
+<p>Check persistent volumes available</p>
+<p><code>kubectl get persistentvolumes</code></p>
+<h3 id="auto-scaling" tabindex="-1">Auto-Scaling <a class="anchor-link" href="#auto-scaling">#</a></h3>
+<p><code>kubectl autoscale deployment wordpress --cpu-percent=50 --min=1 --max=5</code></p>
+<p>Simulate over loading on containers</p>
+<p><code>kubectl run -i --tty load-generator --image=busybox /bin/sh</code></p>
+<p><a href="https://en.wikipedia.org/wiki/BusyBox">What is BusyBox?</a></p>
+<h2 id="service" tabindex="-1">Service <a class="anchor-link" href="#service">#</a></h2>
+<h3 id="headless-service" tabindex="-1">Headless Service <a class="anchor-link" href="#headless-service">#</a></h3>
+<blockquote>
+<p>Each connection to the service is forwarded to one randomly selected backing pod. But what if the client needs to connect to all of those pods? What if the backing pods themselves need to each connect to all the other backing pods. Connecting through the service clearly isn’t the way to do this. What is?</p>
+<p>For a client to connect to all pods, it needs to figure out the the IP of each individual pod. One option is to have the client call the Kubernetes API server and get the list of pods and their IP addresses through an API call, but because you should always strive to keep your apps Kubernetes-agnostic, using the API server isn’t ideal</p>
+<p>Luckily, Kubernetes allows clients to discover pod IPs through DNS lookups. Usually, when you perform a DNS lookup for a service, the DNS server returns a single IP — the service’s cluster IP. But if you tell Kubernetes you don’t need a cluster IP for your service (you do this by setting the clusterIP field to None in the service specification ), the DNS server will return the pod IPs instead of the single service IP. Instead of returning a single DNS A record, the DNS server will return multiple A records for the service, each pointing to the IP of an individual pod backing the service at that moment. Clients can therefore do a simple DNS A record lookup and get the IPs of all the pods that are part of the service. The client can then use that information to connect to one, many, or all of them.</p>
+<p>Setting the clusterIP field in a service spec to None makes the service headless, as Kubernetes won’t assign it a cluster IP through which clients could connect to the pods backing it.</p>
+<p>“Kubernetes in Action” by Marco Luksa</p>
+</blockquote>
+<h3 id="secrets" tabindex="-1">Secrets <a class="anchor-link" href="#secrets">#</a></h3>
+<p>Create a secret password</p>
+<p><code>kubectl create secret generic mysql-pass --from-literal=password=AMuchBetterWayToStoreAPassword</code></p>
+<p>Check secrets created</p>
+<p><code>kubectl get secrets</code></p>
+<p>Decoding a secret</p>
+<p><code>kubectl get secrets mysql-pass -o yaml</code></p>
+<h3 id="auditing" tabindex="-1">Auditing <a class="anchor-link" href="#auditing">#</a></h3>
+<p><a href="https://kubernetes.io/docs/tasks/debug-application-cluster/audit">Auditing K8s</a></p>
+<!-- ## Kubernetes Architecture
+<h3 id="components" tabindex="-1">Components <a class="anchor-link" href="#components">#</a></h3>
+<h4 id="master-components" tabindex="-1">Master Components <a class="anchor-link" href="#master-components">#</a></h4>
+<h5>kube-apiserver</h5>
+<p>Component on the master that exposes Kubernetes API. It is the front-end for the Kubernetes control plane.</p>
+<h5>etcd</h5>
+<p>Consistent and highly-available key value store used as Kubernetes’ backing store for all cluster data.</p>
+<h5>kube-scheduler</h5>
+<p>Component on the master that watches newly created pods that have no node assigned, and selects a node for them to run on.</p>
+<h5>kube-controller-manager</h5>
+<p>Component on the master that runs controllers .</p>
+<p>Logically, each controller is a separate process, but to reduce complexity, they are all compiled into a single binary and run in a single process.</p>
+<p>These controllers include:</p>
+<ul>
+<li>Node Controller: Responsible for noticing and responding when nodes go down.</li>
+<li>Replication Controller: Responsible for maintaining the correct number of pods for every replication controller object in the system.</li>
+<li>Endpoints Controller: Populates the Endpoints object (that is, joins Services &amp; Pods).</li>
+<li>Service Account &amp; Token Controllers: Create default accounts and API access tokens for new namespaces.</li>
+</ul>
+<h3 id="node-components" tabindex="-1">Node Components <a class="anchor-link" href="#node-components">#</a></h3>
+<h4 id="kubelet" tabindex="-1">kubelet <a class="anchor-link" href="#kubelet">#</a></h4>
+<p>An agent that runs on each node in the cluster. It makes sure that containers are running in a pod.</p>
+<p>The kubelet takes a set of PodSpecs that are provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy. The kubelet doesn’t manage containers which were not created by Kubernetes.</p>
+<h4 id="kube-proxy" tabindex="-1">kube-proxy <a class="anchor-link" href="#kube-proxy">#</a></h4>
+<p>kube-proxy is a network proxy that runs on each node in your cluster, implementing part of the Kubernetes ServiceA way to expose an application running on a set of Pods as a network service. concept.</p>
+<p>kube-proxy maintains network rules on nodes. These network rules allow network communication to your Pods from network sessions inside or outside of your cluster.</p>
+<p>kube-proxy uses the operating system packet filtering layer if there is one and it’s available. Otherwise, kube-proxy forwards the traffic itself.</p>
+<h4 id="container-runtime" tabindex="-1">Container Runtime <a class="anchor-link" href="#container-runtime">#</a></h4>
+<p>The container runtime is the software that is responsible for running containers.</p>
+<p>Kubernetes supports several container runtimes: Docker, containerd, <a href="https://cri-o.io/">cri-o</a>, rktlet and any implementation of the Kubernetes CRI (Container Runtime Interface).</p>
+<p><img src="https://cri-o.io/assets/images/architecture.png" alt=""></p>
+<h3 id="pods" tabindex="-1">Pods <a class="anchor-link" href="#pods">#</a></h3>
+<p>A Pod is a group of one or more containers, with shared storage/network, and a specification how to run the containers.</p>
+<p>Containers within a Pod share an IP address and port space, and can find each other via localhost.</p>
+<p>In terms of <code>Docker</code> constructs, a Pod is modelled as a group of Docker containers with shared namespaces and shared filesystem volumes.</p>
+<h3 id="patterns-of-modular-app-development" tabindex="-1">Patterns of Modular App Development <a class="anchor-link" href="#patterns-of-modular-app-development">#</a></h3>
+<p><img src="./images/k8s/multi-container-pod-design.png" alt="Three Patterns"></p>
+<p>Follow is three patterns to be used to create a Pod:</p>
+<h4 id="sidecar-containers" tabindex="-1">Sidecar Containers <a class="anchor-link" href="#sidecar-containers">#</a></h4>
+<p>Example:</p>
+<p>The sidecar container is nginx serving that log file. (In practice, your sidecar is likely to be a log collection container that uploads to external storage.)</p>
+<p><img src="./images/k8s/sidecar-containers.png" alt="Sidecar Pattern"></p>
+<h4 id="adapter-pattern" tabindex="-1">Adapter Pattern <a class="anchor-link" href="#adapter-pattern">#</a></h4>
+<p>Example:</p>
+<p>It defines a main application container which writes<br>
+the current date and system usage information to a log file<br>
+every five seconds.</p>
+<p>The adapter container reads what the application has written and<br>
+reformats it into a structure that a hypothetical monitoring<br>
+service requires.</p>
+<p><img src="./images/k8s/adapter-containers.png" alt="Adapter Pattern"></p>
+<h4 id="ambassador-pattern-(proxy)" tabindex="-1">Ambassador pattern (Proxy) <a class="anchor-link" href="#ambassador-pattern-(proxy)">#</a></h4>
+<p>Example:</p>
+<p>One of the best use-cases for the ambassador pattern is for providing access to a database. When developing locally, you probably want to use your local database, while your test and production deployments want different databases again.</p>
+<p>The application will always use localhost to communicate with the database, because it will the Ambassador.</p>
+<p><img src="./images/k8s/ambassador-containers.png" alt="Ambassador Pattern"></p>
+<h2 id="kubernetes-concepts" tabindex="-1">Kubernetes Concepts <a class="anchor-link" href="#kubernetes-concepts">#</a></h2>
+<h3 id="health-check" tabindex="-1">Health Check <a class="anchor-link" href="#health-check">#</a></h3>
+<ul>
+<li>
+<p>Readiness Probes: To determine when a Pod is “ready” (e.g. after it has started to see when it’s ready and has loaded what it needs to internally in the image and is ready to take requests from external services)</p>
+</li>
+<li>
+<p>Liveness Probes: To determine when a Pod is “healthy” or “unhealthy” after it has become ready</p>
+</li>
+</ul>
+<h2 id="usage-%26-resource-monitoring" tabindex="-1">Usage &amp; Resource Monitoring <a class="anchor-link" href="#usage-%26-resource-monitoring">#</a></h2>
+<p><code>Heapster</code> has been deprecated.</p>
+<p><s><code>Heapster</code> uses <code>InfluxDB</code> and <code>Grafana</code>. <code>InfluxDB</code> is used to store data for <code>Grafana</code></s></p>
+<p><s>Enable add on <code>heapster</code></s></p>
+<p><s><code>minikube addons enable heapster</code></s></p>
+<p><s>Check if it is on</s></p>
+<p><s><code>kubectl get pods --namespace=kube-system</code></s></p>
+<p><s>When pods are up we can access the Grafana Dashboard</s></p>
+<p><s><code>minikube addons open heapster</code></s></p>
+<p>An interest open-source OpsView for K8S is <a href="https://github.com/hjacobs/kube-ops-view">kube-ops-view</a>.</p>
+<p>It gave a operational picture of nodes, pods and each container inside of these pods.</p>
+<p>There are many other including some paid like <code>New Relic</code>. --&gt;</p>
+<h2 id="troubleshooting-commands" tabindex="-1">Troubleshooting commands <a class="anchor-link" href="#troubleshooting-commands">#</a></h2>
+<p>Check logs deployment</p>
+<p><code>kubectl logs -l app=wordpress (labels)</code></p>
+<h2 id="curious-things" tabindex="-1">Curious Things <a class="anchor-link" href="#curious-things">#</a></h2>
+<h3 id="namespace-%26-resource-quotas" tabindex="-1">Namespace &amp; Resource Quotas <a class="anchor-link" href="#namespace-%26-resource-quotas">#</a></h3>
+<p>If a deployment doesn’t have enough memory or cpu to set up. It will fail. For example:</p>
+<p>I have a limit of 200m memory, created previously with namespace, and I want to set up 3 containers that request at least 200m per container</p>
+<p>So all the containers will not set up, because it will not pass at the <code>MinimumReplicasUnavailable</code>.</p>
+<h2 id="labs" tabindex="-1">Labs <a class="anchor-link" href="#labs">#</a></h2>
+<ul>
+<li>Create YAML that starts a deployment for Nginx, using version 1.8. 3 replicas must go live and should add the label app=nginx.</li>
+</ul>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">lab5-nginx</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">app:</span> <span class="hljs-string">nginx</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">nginx</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">nginx</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">nginx:1.8</span>
+        <span class="hljs-attr">ports:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">80</span>
+</code></pre>
+<ul>
+<li>Use command to show all resources that use the label app=nginx.</li>
+</ul>
+<p><code>kubectl get all --selector app=nginx</code></p>
+<ul>
+<li>Change the number of replicas to 4.</li>
+</ul>
+<p><code>kubectl scale --replicas=4 deployment lab5-nginx</code></p>
+<ul>
+<li>Upgrade the Nginx deployment to v1.15 of Nginx.</li>
+</ul>
+<p><code>kubectl edit deployment lab5-nginx</code></p>
+<ul>
+<li>Expose a deployment with type NodePort</li>
+</ul>
+<p><code>kubectl expose deploy lab5-nginx --type=NodePort</code></p>
+<pre><code class="hljs language-bash">NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP        22h
+lab5-nginx   NodePort    10.96.194.241   &lt;none&gt;        80:32432/TCP   15h
+nginx-dash   ClusterIP   10.96.219.184   &lt;none&gt;        80/TCP         16h
+</code></pre>
+<p><code>curl $(minikube ip):32432</code></p>
+<pre><code class="hljs language-bash"> % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   612  100   612    0     0   597k      0 --:--:-- --:--:-- --:--:--  597k&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;<span class="hljs-built_in">head</span>&gt;
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+&lt;style&gt;
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+&lt;p&gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&lt;/p&gt;
+<p>&lt;p&gt;For online documentation and support please refer to<br>
+&lt;a href=<span class="hljs-string">&quot;<a href="http://nginx.org/&amp;quot;">http://nginx.org/&amp;quot;</a></span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;<br>
+Commercial support is available at<br>
+&lt;a href=<span class="hljs-string">&quot;<a href="http://nginx.com/&amp;quot;">http://nginx.com/&amp;quot;</a></span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;</p>
+<p>&lt;p&gt;&lt;em&gt;Thank you <span class="hljs-keyword">for</span> using nginx.&lt;/em&gt;&lt;/p&gt;<br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+</code></pre></p>
+<ul>
+<li>Get pods of namespace default using <code>curl</code></li>
+</ul>
+<p><code>kubectl proxy --port=8001 &amp;</code></p>
+<p><code>curl http://localhost:8001/api/v1/namespaces/default/pods</code></p>
+<ul>
+<li>Install <code>metrics-server</code> for kubernetes</li>
+</ul>
+<p><code>kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml</code></p>
+<ul>
+<li>Verify health of <code>metrics-server</code></li>
+</ul>
+<p><code>kubectl -n kube-system get pods</code> and <code>kubectl -n kube-system logs metrics-server-59d5c795dc-78qq4</code></p>
+<ul>
+<li>Verify pods or nodes metrics of default namespace</li>
+</ul>
+<p><code>kubectl top pods</code> or <code>kubectl top nodes</code></p>
+<h3 id="helm" tabindex="-1">Helm <a class="anchor-link" href="#helm">#</a></h3>
+<ul>
+<li>Add repo bitnami</li>
+</ul>
+<p><code>helm repo add bitnami https://charts.bitnami.com/bitnami &amp;&amp; helm repo update</code></p>
+<ul>
+<li>Install chart for <code>MariaDB</code></li>
+</ul>
+<p><code>helm install mydb bitnami/mariadb</code></p>
+<h2 id="references-%26-cheatsheets" tabindex="-1">References &amp; Cheatsheets <a class="anchor-link" href="#references-%26-cheatsheets">#</a></h2>
+<p><a href="https://kubernetes.io/docs/reference/kubectl/overview/">Overview Kubectl</a></p>
+<p><a href="https://kubernetes.io/docs">Kubernetes Docs</a></p>
+<p><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/#enabling-shell-autocompletion">Enabling Kubectl Auto Completion</a></p>
+<p><a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/">Kubectl Cheatsheet</a></p>
+  </article>
+  <!-- up button -->
+  <div>
+    <button
+      id="upBtn"
+      aria-label="go to top"
+      style="position:fixed; width:32px; height:32px; border-radius:50%; border:none; background-color:black; right:32px; bottom:32px; color:white; focus:outline-none; cursor:pointer; transition-duration:500ms; opacity:0; pointer-events:none;"
+    ><i class="arrow up"></i></button>
+  </div>
+  <style>
+  .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  </style>
+  <script>
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 250) {
+      upBtn.style.opacity = 1;
+      upBtn.style.pointerEvents = 'auto';     
+    }
+    else {
+      upBtn.style.opacity = 0;
+      upBtn.style.pointerEvents = 'none';
+    }
+  })
+
+  upBtn.addEventListener('click', () => {
+    let start = document.querySelector('.reader-bar-start')
+    start.scrollIntoView({behavior: "smooth"})
+  })
+  </script>
+  <!-- reader bar -->
+  <div id="readerBarContainer" style="height:4px;width:100%;background-color:#fff;position:fixed;top:0px;left:0;z-index:100;transition:0.2s;">
+    <div id="readerBar" style="height:4px;width:0;background-color:rgb(20 184 166);position:fixed;top:0px;left:0;z-index:200;transition:0.2s;"></div>
+  </div>
+  <script>
+    let winH = window.innerHeight;
+    const content = document.querySelector('.reader-bar-start');
+
+    let contentH = content.offsetHeight;
+    let contentS = contentH - winH;
+    let readerBar = document.getElementById('readerBar');
+    window.addEventListener('load', () => {
+      document.addEventListener ('scroll', updateBar);
+    })
+    window.addEventListener('resize', redefine)
+
+    function redefine() {
+      winH = window.innerHeight;
+      contentH = content.offsetHeight;
+      contentS = contentH - winH;
+      updateBar();
+    }
+
+    function updateBar() {
+      const pagePos = window.scrollY; 
+      const updatedBar = pagePos * 100 / contentS;
+      readerBar.style.width = updatedBar + "%";
+    }
+  </script>
+  <div class="mt-12 pt-4 text-gray-600 text-sm border-t border-gray-300">
+    <p>
+      This page is part of the <a href="/blog">blog</a> section.
+    </p>
+  </div>
+</section>
+
+      </div>
+      
+      <script>function btnHandler(e,n){e=document.querySelector(e);e&&e.addEventListener("click",function(e){e.preventDefault(),n()},!1)}btnHandler(".btn-log",function(){console.log("👋 Oh, hello there you!")});</script>
+    </div>
+  </body>
+</html>
+
+
+

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+    <title>Chaos Engineering Notes</title>
+    <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="daniloavilez" />
+<meta name="twitter:creator" content="@danilo_avilez" />
+<meta property="og:url" content="https://avilez.com.br/" />
+<meta property="og:title" content="Danilo Avilez" />
+
+  </head>
+  <body class="container mx-auto mb-12 lg:max-w-4xl text-gray-700">
+    <div class="reader-bar-start">
+      
+<header class="bg-teal-500 flex justify-between px-4 py-2 mb-10">
+  <h1 class=" text-white font-medium text-2xl"><a href="/" class="">Danilo Avilez</a></h1>
+  
+  
+    <nav>
+      
+      
+<ul class="flex items-row">
+  
+    <li class="pr-1">
+      <a href="/about" class="nav-tab" target="_self">
+        
+          About
+        
+      </a>
+    </li>
+  
+    <li class="pr-1">
+      <a href="/blog" class="nav-tab" target="_self">
+        
+          Blog
+        
+      </a>
+    </li>
+  
+</ul>
+
+    </nav>
+  
+</header>
+
+
+
+
+      <div class="content leading-relaxed">
+        <section>
+  <time value="" class="text-gray-600">May 17, 2019</time>
+  <h1 class="heading">Chaos Engineering Notes</h1>
+  <div class="mb-2 text-sm text-gray-600">
+    About 1 min reading time
+  </div>
+  <hr>
+  <aside class="mb-2">
+    <nav class="toc" >
+        <ol><li><a href="#using-docker-and-gremlin">Using Docker and Gremlin</a><ol><li><a href="#installing-docker-(opensuse)">Installing Docker (OpenSUSE)</a></li><li><a href="#creating-an-htop-container">Creating an htop container</a></li><li><a href="#creating-an-nginx-container">Creating an Nginx container</a></li><li><a href="#monitoring-nginx-container">Monitoring nginx container</a></li></ol></li></ol>
+      </nav>
+  </aside>
+  <hr>
+  <article class="mt-4">
+    <p>My notes for Chaos Engineering</p>
+<!--more-->
+<h2 id="using-docker-and-gremlin" tabindex="-1">Using Docker and Gremlin <a class="anchor-link" href="#using-docker-and-gremlin">#</a></h2>
+<h3 id="installing-docker-(opensuse)" tabindex="-1">Installing Docker (OpenSUSE) <a class="anchor-link" href="#installing-docker-(opensuse)">#</a></h3>
+<p>Install docker and docker-compose</p>
+<p><code>zypper install docker docker-compose</code></p>
+<p>Start docker daemon, docker daemon will be started during booting</p>
+<p><code>sudo systemctl enable docker</code></p>
+<p>Join docker group in order to use the docker daemon</p>
+<p><code>sudo usermod -G docker -a YOURUSERNAME</code></p>
+<p>Now ‘Log out’ and ‘Log in’ again. Ok, we’re done so far!! :)</p>
+<h3 id="creating-an-htop-container" tabindex="-1">Creating an htop container <a class="anchor-link" href="#creating-an-htop-container">#</a></h3>
+<p>Now we’re going to create a htop container, this container will serve as a resource observable of others containers.</p>
+<p>Let’s create a <code>Dockerfile</code></p>
+<p><code>vi Dockerfile</code></p>
+<p>Add this content</p>
+<pre><code class="hljs language-bash">FROM alpine:latest
+RUN apk add --update htop &amp;&amp; <span class="hljs-built_in">rm</span> -rf /var/cache/apk/*
+ENTRYPOINT [<span class="hljs-string">&quot;htop&quot;</span>]
+</code></pre>
+<p>We’re going to build our new htop container</p>
+<p><code>sudo docker build -t htop .</code></p>
+<p>If you want to test this container, we can run this command below:</p>
+<p><code>docker run -it --rm --pid=host htop</code></p>
+<h3 id="creating-an-nginx-container" tabindex="-1">Creating an Nginx container <a class="anchor-link" href="#creating-an-nginx-container">#</a></h3>
+<p>We’re going to create a directory and inside it, we will add our fake web site</p>
+<pre><code class="hljs language-shell">mkdir -p nginx/html
+cd nginx/html
+</code></pre>
+<p>Inside the dir, add the file <code>index.html</code>, put the example below:</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Docker nginx tutorial<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">link</span>
+      <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span>
+      <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot;</span>
+      <span class="hljs-attr">integrity</span>=<span class="hljs-string">&quot;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&quot;</span>
+      <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">&quot;anonymous&quot;</span>
+    /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello this is your container speaking.<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This page was created by your Docker container.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Now it’s time to create a Gremlin attack.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
+<p>Run the command, this will create a container <code>nginx</code></p>
+<p><code>sudo docker run -l service=nginx --name docker-nginx -p 80:80 -d -v /docker-nginx/html:/usr/share/nginx/html nginx</code></p>
+<h3 id="monitoring-nginx-container" tabindex="-1">Monitoring nginx container <a class="anchor-link" href="#monitoring-nginx-container">#</a></h3>
+<p>Now it’s time to use our htop container to monitoring our nginx container</p>
+<p><code>docker run -it --rm --pid=container:docker-nginx htop</code></p>
+  </article>
+  <!-- up button -->
+  <div>
+    <button
+      id="upBtn"
+      aria-label="go to top"
+      style="position:fixed; width:32px; height:32px; border-radius:50%; border:none; background-color:black; right:32px; bottom:32px; color:white; focus:outline-none; cursor:pointer; transition-duration:500ms; opacity:0; pointer-events:none;"
+    ><i class="arrow up"></i></button>
+  </div>
+  <style>
+  .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  </style>
+  <script>
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 250) {
+      upBtn.style.opacity = 1;
+      upBtn.style.pointerEvents = 'auto';     
+    }
+    else {
+      upBtn.style.opacity = 0;
+      upBtn.style.pointerEvents = 'none';
+    }
+  })
+
+  upBtn.addEventListener('click', () => {
+    let start = document.querySelector('.reader-bar-start')
+    start.scrollIntoView({behavior: "smooth"})
+  })
+  </script>
+  <!-- reader bar -->
+  <div id="readerBarContainer" style="height:4px;width:100%;background-color:#fff;position:fixed;top:0px;left:0;z-index:100;transition:0.2s;">
+    <div id="readerBar" style="height:4px;width:0;background-color:rgb(20 184 166);position:fixed;top:0px;left:0;z-index:200;transition:0.2s;"></div>
+  </div>
+  <script>
+    let winH = window.innerHeight;
+    const content = document.querySelector('.reader-bar-start');
+
+    let contentH = content.offsetHeight;
+    let contentS = contentH - winH;
+    let readerBar = document.getElementById('readerBar');
+    window.addEventListener('load', () => {
+      document.addEventListener ('scroll', updateBar);
+    })
+    window.addEventListener('resize', redefine)
+
+    function redefine() {
+      winH = window.innerHeight;
+      contentH = content.offsetHeight;
+      contentS = contentH - winH;
+      updateBar();
+    }
+
+    function updateBar() {
+      const pagePos = window.scrollY; 
+      const updatedBar = pagePos * 100 / contentS;
+      readerBar.style.width = updatedBar + "%";
+    }
+  </script>
+  <div class="mt-12 pt-4 text-gray-600 text-sm border-t border-gray-300">
+    <p>
+      This page is part of the <a href="/blog">blog</a> section.
+    </p>
+  </div>
+</section>
+
+      </div>
+      
+      <script>function btnHandler(e,n){e=document.querySelector(e);e&&e.addEventListener("click",function(e){e.preventDefault(),n()},!1)}btnHandler(".btn-log",function(){console.log("👋 Oh, hello there you!")});</script>
+    </div>
+  </body>
+</html>
+
+
+

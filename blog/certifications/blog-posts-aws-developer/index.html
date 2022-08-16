@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+    <title>AWS Associate Developer</title>
+    <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="daniloavilez" />
+<meta name="twitter:creator" content="@danilo_avilez" />
+<meta property="og:url" content="https://avilez.com.br/" />
+<meta property="og:title" content="Danilo Avilez" />
+
+  </head>
+  <body class="container mx-auto mb-12 lg:max-w-4xl text-gray-700">
+    <div class="reader-bar-start">
+      
+<header class="bg-teal-500 flex justify-between px-4 py-2 mb-10">
+  <h1 class=" text-white font-medium text-2xl"><a href="/" class="">Danilo Avilez</a></h1>
+  
+  
+    <nav>
+      
+      
+<ul class="flex items-row">
+  
+    <li class="pr-1">
+      <a href="/about" class="nav-tab" target="_self">
+        
+          About
+        
+      </a>
+    </li>
+  
+    <li class="pr-1">
+      <a href="/blog" class="nav-tab" target="_self">
+        
+          Blog
+        
+      </a>
+    </li>
+  
+</ul>
+
+    </nav>
+  
+</header>
+
+
+
+
+      <div class="content leading-relaxed">
+        <section>
+  <time value="" class="text-gray-600">September 10, 2020</time>
+  <h1 class="heading">AWS Associate Developer</h1>
+  <div class="mb-2 text-sm text-gray-600">
+    About 1 min reading time
+  </div>
+  <hr>
+  <aside class="mb-2">
+    <nav class="toc" >
+        <ol><li><a href="#aws-cli-%26-sdk">AWS CLI &amp; SDK</a></li><li><a href="#iam">IAM</a><ol><li><a href="#users">Users</a></li><li><a href="#policies">Policies</a></li><li><a href="#groups">Groups</a></li><li><a href="#roles">Roles</a></li><li><a href="#identity-providers-(idp)">Identity Providers (IdP)</a><ol><li><a href="#compatible-idps">Compatible IdPs</a></li></ol></li><li><a href="#iam-access-methods">IAM Access Methods</a></li></ol></li><li><a href="#virtual-private-cloud-(vpc)">Virtual Private Cloud (VPC)</a><ol><li><a href="#networking">Networking</a></li><li><a href="#security">Security</a><ol><li><a href="#internet-access">Internet Access</a></li></ol></li></ol></li></ol>
+      </nav>
+  </aside>
+  <hr>
+  <article class="mt-4">
+    <p>My notes for AWS Associate Developer Exam</p>
+<!--more-->
+<h2 id="aws-cli-%26-sdk" tabindex="-1">AWS CLI &amp; SDK <a class="anchor-link" href="#aws-cli-%26-sdk">#</a></h2>
+<p>They use AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.</p>
+<p>In order to configure CLI, we need to type <code>aws configure</code> and it will ask four questions. We will need ACCESS_KEY_ID and SECRET_ACCESS_KEY.</p>
+<p>Do a command to test:</p>
+<pre><code class="hljs language-sh">aws ec2 describe-instances
+{
+    <span class="hljs-string">&quot;Reservations&quot;</span>: []
+}
+</code></pre>
+<p>How to use <code>JMESPath</code>:</p>
+<blockquote>
+<p>Update the result</p>
+</blockquote>
+<pre><code class="hljs language-bash">aws ec2 describe-instances --query <span class="hljs-string">&#x27;Reservations[*].Instances[*].[Placement.AvailabilityZone | [0], InstanceId, State.Name]&#x27;</span>
+{
+    <span class="hljs-string">&quot;Reservations&quot;</span>: []
+}
+</code></pre>
+<h2 id="iam" tabindex="-1">IAM <a class="anchor-link" href="#iam">#</a></h2>
+<p>Users, Group, Roles</p>
+<h3 id="users" tabindex="-1">Users <a class="anchor-link" href="#users">#</a></h3>
+<ul>
+<li>Programatic Access</li>
+<li>AWS Management Console Access</li>
+</ul>
+<h3 id="policies" tabindex="-1">Policies <a class="anchor-link" href="#policies">#</a></h3>
+<p>Effect<br>
+Action<br>
+Resource<br>
+Condition</p>
+<p>Copy of AWS Policy<br>
+Policy Wizard<br>
+Self-defined</p>
+<h3 id="groups" tabindex="-1">Groups <a class="anchor-link" href="#groups">#</a></h3>
+<p>A collection of Users<br>
+Defined by a group Name (not change name because is linked to ARN)</p>
+<h3 id="roles" tabindex="-1">Roles <a class="anchor-link" href="#roles">#</a></h3>
+<p>AWS identity with permission policies<br>
+Can be assumed</p>
+<h3 id="identity-providers-(idp)" tabindex="-1">Identity Providers (IdP) <a class="anchor-link" href="#identity-providers-(idp)">#</a></h3>
+<p>Integrate external identity database<br>
+Can assign permissions to users in that external IdP<br>
+Example: Corporate User Directory</p>
+<h4 id="compatible-idps" tabindex="-1">Compatible IdPs <a class="anchor-link" href="#compatible-idps">#</a></h4>
+<p>OpenID Connect (OIDC)<br>
+SAML</p>
+<h3 id="iam-access-methods" tabindex="-1">IAM Access Methods <a class="anchor-link" href="#iam-access-methods">#</a></h3>
+<p>AWS Management Console<br>
+AWS CLI<br>
+AWS SDK</p>
+<h2 id="virtual-private-cloud-(vpc)" tabindex="-1">Virtual Private Cloud (VPC) <a class="anchor-link" href="#virtual-private-cloud-(vpc)">#</a></h2>
+<ul>
+<li>VPC dedicated to an AWS account</li>
+<li>Logically isolated from other VPCs</li>
+<li>Some AWS services are launched into or attached to VPC</li>
+<li>Configurable:
+<ul>
+<li>Subnet Ranges</li>
+<li>Routing Tables</li>
+<li>Gateways</li>
+<li>Security</li>
+</ul>
+</li>
+</ul>
+<h3 id="networking" tabindex="-1">Networking <a class="anchor-link" href="#networking">#</a></h3>
+<p>If EC2 is restarted the private IP is not changed, but public IP will be changed<br>
+Multiple IPs can be assigned to an instance<br>
+Define and attach multiple network interfaces to one instance</p>
+<h3 id="security" tabindex="-1">Security <a class="anchor-link" href="#security">#</a></h3>
+<p>Security Groups<br>
+Network ACLs (Access Control Lists)<br>
+Assign groups to VPC and EC2 instances</p>
+<h4 id="internet-access" tabindex="-1">Internet Access <a class="anchor-link" href="#internet-access">#</a></h4>
+<p>Access from VPC to Internet is via Internet Gateway<br>
+Access to/from Instance with public IP is via Internet Gateway<br>
+Instance with only Private IP address cannot access Internet but can talk to eaxh other<br>
+Alternative: NAT Gateway can be used for instances with only private IP addresses</p>
+  </article>
+  <!-- up button -->
+  <div>
+    <button
+      id="upBtn"
+      aria-label="go to top"
+      style="position:fixed; width:32px; height:32px; border-radius:50%; border:none; background-color:black; right:32px; bottom:32px; color:white; focus:outline-none; cursor:pointer; transition-duration:500ms; opacity:0; pointer-events:none;"
+    ><i class="arrow up"></i></button>
+  </div>
+  <style>
+  .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  </style>
+  <script>
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 250) {
+      upBtn.style.opacity = 1;
+      upBtn.style.pointerEvents = 'auto';     
+    }
+    else {
+      upBtn.style.opacity = 0;
+      upBtn.style.pointerEvents = 'none';
+    }
+  })
+
+  upBtn.addEventListener('click', () => {
+    let start = document.querySelector('.reader-bar-start')
+    start.scrollIntoView({behavior: "smooth"})
+  })
+  </script>
+  <!-- reader bar -->
+  <div id="readerBarContainer" style="height:4px;width:100%;background-color:#fff;position:fixed;top:0px;left:0;z-index:100;transition:0.2s;">
+    <div id="readerBar" style="height:4px;width:0;background-color:rgb(20 184 166);position:fixed;top:0px;left:0;z-index:200;transition:0.2s;"></div>
+  </div>
+  <script>
+    let winH = window.innerHeight;
+    const content = document.querySelector('.reader-bar-start');
+
+    let contentH = content.offsetHeight;
+    let contentS = contentH - winH;
+    let readerBar = document.getElementById('readerBar');
+    window.addEventListener('load', () => {
+      document.addEventListener ('scroll', updateBar);
+    })
+    window.addEventListener('resize', redefine)
+
+    function redefine() {
+      winH = window.innerHeight;
+      contentH = content.offsetHeight;
+      contentS = contentH - winH;
+      updateBar();
+    }
+
+    function updateBar() {
+      const pagePos = window.scrollY; 
+      const updatedBar = pagePos * 100 / contentS;
+      readerBar.style.width = updatedBar + "%";
+    }
+  </script>
+  <div class="mt-12 pt-4 text-gray-600 text-sm border-t border-gray-300">
+    <p>
+      This page is part of the <a href="/blog">blog</a> section.
+    </p>
+  </div>
+</section>
+
+      </div>
+      
+      <script>function btnHandler(e,n){e=document.querySelector(e);e&&e.addEventListener("click",function(e){e.preventDefault(),n()},!1)}btnHandler(".btn-log",function(){console.log("👋 Oh, hello there you!")});</script>
+    </div>
+  </body>
+</html>
+
+
+

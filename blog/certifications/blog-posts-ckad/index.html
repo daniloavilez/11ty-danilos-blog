@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+    <title>CKAD Notes</title>
+    <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="daniloavilez" />
+<meta name="twitter:creator" content="@danilo_avilez" />
+<meta property="og:url" content="https://avilez.com.br/" />
+<meta property="og:title" content="Danilo Avilez" />
+
+  </head>
+  <body class="container mx-auto mb-12 lg:max-w-4xl text-gray-700">
+    <div class="reader-bar-start">
+      
+<header class="bg-teal-500 flex justify-between px-4 py-2 mb-10">
+  <h1 class=" text-white font-medium text-2xl"><a href="/" class="">Danilo Avilez</a></h1>
+  
+  
+    <nav>
+      
+      
+<ul class="flex items-row">
+  
+    <li class="pr-1">
+      <a href="/about" class="nav-tab" target="_self">
+        
+          About
+        
+      </a>
+    </li>
+  
+    <li class="pr-1">
+      <a href="/blog" class="nav-tab" target="_self">
+        
+          Blog
+        
+      </a>
+    </li>
+  
+</ul>
+
+    </nav>
+  
+</header>
+
+
+
+
+      <div class="content leading-relaxed">
+        <section>
+  <time value="" class="text-gray-600">February 27, 2020</time>
+  <h1 class="heading">CKAD Notes</h1>
+  <div class="mb-2 text-sm text-gray-600">
+    About 4 min reading time
+  </div>
+  <hr>
+  <aside class="mb-2">
+    <nav class="toc" >
+        <ol><li><a href="#curriculum">Curriculum</a></li><li><a href="#exam-environment">Exam Environment</a><ol><li><a href="#deleting-k8s-objects">Deleting K8S Objects</a></li><li><a href="#finding-object-information">Finding Object Information</a></li><li><a href="#using-an-alias-for-kubectl">Using an Alias for kubectl</a></li></ol></li><li><a href="#sample-exam">Sample Exam</a><ol><li><a href="#pods">Pods</a></li><li><a href="#finding-pods">Finding pods</a></li><li><a href="#configmaps">ConfigMaps</a></li><li><a href="#sidecars">Sidecars</a></li><li><a href="#inspecting-containers">Inspecting containers</a></li><li><a href="#using-probes">Using probes</a></li><li><a href="#creating-a-deployment">Creating a deployment</a></li><li><a href="#exposing-services">Exposing services</a></li><li><a href="#using-network-policies">Using Network Policies</a></li><li><a href="#using-storage">Using Storage</a></li></ol></li></ol>
+      </nav>
+  </aside>
+  <hr>
+  <article class="mt-4">
+    <p>My notes for CKAD Exam</p>
+<!--more-->
+<h2 id="curriculum" tabindex="-1">Curriculum <a class="anchor-link" href="#curriculum">#</a></h2>
+<ul>
+<li>Core Concepts - 13%</li>
+<li>Multi-Container Pods - 10%</li>
+<li>Services &amp; Networking - 13%</li>
+<li>Pod Design - 20%</li>
+<li>Configuration - 18%</li>
+<li>Observability - 18%</li>
+<li>State Persistence - 8%</li>
+</ul>
+<h2 id="exam-environment" tabindex="-1">Exam Environment <a class="anchor-link" href="#exam-environment">#</a></h2>
+<p>Tools to need to be familiar with to get succeeded:</p>
+<ul>
+<li>
+<p>YAML</p>
+</li>
+<li>
+<p>Vim</p>
+</li>
+<li>
+<p>Bash</p>
+</li>
+<li>
+<p>Use K8S documentation is allowed. <a href="https://kubernetes.io/docs/home/">Kubernetes IO Docs</a></p>
+</li>
+<li>
+<p>Kubernetes Cheatsheet</p>
+</li>
+<li>
+<p>Kubernetes API</p>
+</li>
+</ul>
+<p><code>kubectl get ns</code> - Usage of <code>ns</code> instead of <code>namespaces</code></p>
+<p><code>kubectl describe pvc claim</code> - Usage of <code>pvc</code> instead of <code>persistentvolumeclaim</code></p>
+<h3 id="deleting-k8s-objects" tabindex="-1">Deleting K8S Objects <a class="anchor-link" href="#deleting-k8s-objects">#</a></h3>
+<p><code>$ kubectl delete pod nginx --grace-period=0 --force</code></p>
+<h3 id="finding-object-information" tabindex="-1">Finding Object Information <a class="anchor-link" href="#finding-object-information">#</a></h3>
+<p>Filter configuration. Grep is great here!</p>
+<p><code>$ kubectl get pods -o yaml | grep -C 5 labels:</code></p>
+<h3 id="using-an-alias-for-kubectl" tabindex="-1">Using an Alias for kubectl <a class="anchor-link" href="#using-an-alias-for-kubectl">#</a></h3>
+<pre><code class="hljs language-bash">$ <span class="hljs-built_in">alias</span> k=kubectl
+$ k version
+</code></pre>
+<h2 id="sample-exam" tabindex="-1">Sample Exam <a class="anchor-link" href="#sample-exam">#</a></h2>
+<h3 id="pods" tabindex="-1">Pods <a class="anchor-link" href="#pods">#</a></h3>
+<p>Create a namespace ckad-ns1. In this namespace, run the following pods:</p>
+<ul>
+<li>A pod with the name pod-a, running the httpd server image</li>
+</ul>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">pod-a</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-ns1</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">httpd-q1-ckad</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">httpd</span>
+</code></pre>
+<ul>
+<li>A pod with the name pod-b, running the nginx server image as well as the rsyslog image</li>
+</ul>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">pod-b</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-ns1</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx-q2-ckad</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">rsyslog-q2-ckad</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">rsyslog/syslog_appliance_alpine</span>
+</code></pre>
+<h3 id="finding-pods" tabindex="-1">Finding pods <a class="anchor-link" href="#finding-pods">#</a></h3>
+<p>Which command would you use to find all Deployments that have the label ‘app’ set to ‘nginx’</p>
+<p>A.: <code>kubectl get deployments.apps --selector app=nginx</code></p>
+<h3 id="configmaps" tabindex="-1">ConfigMaps <a class="anchor-link" href="#configmaps">#</a></h3>
+<p>In the ckad-ns2 Namespace, run a Pod with the name alpine-pod. This Pod should run a container based on the alpine image. In this container, two variables must be set:</p>
+<ul>
+<li>‘localport’ is set to ‘localhost:8082’</li>
+<li>‘external_url’ is set to ‘<a href="http://linux.com">linux.com</a>’</li>
+</ul>
+<pre><code class="hljs language-bash">$ k create namespace ckad-ns2
+namespace/ckad-ns2 created
+</code></pre>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">data:</span>
+  <span class="hljs-attr">external_url:</span> <span class="hljs-string">linux.com</span>
+  <span class="hljs-attr">localport:</span> <span class="hljs-string">localhost:8082</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">creationTimestamp:</span> <span class="hljs-literal">null</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">alpine-config</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-ns2</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">configmap-ckad-pod</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-ns2</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">demo</span>
+      <span class="hljs-attr">image:</span> <span class="hljs-string">alpine</span>
+      <span class="hljs-attr">command:</span> [<span class="hljs-string">&quot;sleep&quot;</span>, <span class="hljs-string">&quot;3600&quot;</span>]
+      <span class="hljs-attr">envFrom:</span> <span class="hljs-comment"># To simplify I used the `envFrom`</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">configMapRef:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">alpine-config</span>
+      <span class="hljs-comment">#env:</span>
+        <span class="hljs-comment"># Define the environment variable</span>
+        <span class="hljs-comment">#- name: localport  # Notice that the case is different here</span>
+                           <span class="hljs-comment"># from the key name in the ConfigMap.</span>
+        <span class="hljs-comment">#  valueFrom:</span>
+        <span class="hljs-comment">#    configMapKeyRef:</span>
+        <span class="hljs-comment">#      name: alpine-config # The ConfigMap this value comes from.</span>
+        <span class="hljs-comment">#      key: localport # The key to fetch.</span>
+        <span class="hljs-comment">#- name: external_url</span>
+        <span class="hljs-comment">#  valueFrom:</span>
+        <span class="hljs-comment">#    configMapKeyRef:</span>
+        <span class="hljs-comment">#      name: alpine-config</span>
+        <span class="hljs-comment">#      key: external_url</span>
+</code></pre>
+<h3 id="sidecars" tabindex="-1">Sidecars <a class="anchor-link" href="#sidecars">#</a></h3>
+<p>Create a multi-container pod with the name sidecar_pod, that runs in the ckad-ns3 namespace.</p>
+<ul>
+<li>The primary container is running BusyBox, and writes the output of the date command to the /var/log/date.log file every 5 seconds.</li>
+<li>The second container should run as a sidecar and provide access to this file, using an hostpath shared volume.</li>
+</ul>
+<pre><code class="hljs language-bash">$ kubectl create ns ckad-ns3
+namespace/ckad-ns3 created
+</code></pre>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">sidecar-pod</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-ns3</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">busybox</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span>
+    <span class="hljs-attr">args:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/bin/sh</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">-c</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&gt;
+        while true;
+        do
+          echo &quot;$(date)&quot; &gt;&gt; /var/log/date.log;
+          sleep 5;
+        done
+</span>    <span class="hljs-attr">volumeMounts:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">varlog</span>
+      <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/log</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">sidecar-log</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span>
+    <span class="hljs-attr">args:</span> [<span class="hljs-string">/bin/sh</span>, <span class="hljs-string">-c</span>, <span class="hljs-string">&#x27;tail -f /var/log/date.log&#x27;</span>]
+    <span class="hljs-attr">volumeMounts:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">varlog</span>
+      <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/log</span>
+  <span class="hljs-attr">volumes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">varlog</span>
+    <span class="hljs-attr">emptyDir:</span> {}
+</code></pre>
+<h3 id="inspecting-containers" tabindex="-1">Inspecting containers <a class="anchor-link" href="#inspecting-containers">#</a></h3>
+<p>The pod my-server is running 3 containers: file-server, log-server and db-server. When starting it, the log-server fails. Which command should you use to analyze why it is going wrong?</p>
+<p><code>kubectl logs my-server log-server</code></p>
+<h3 id="using-probes" tabindex="-1">Using probes <a class="anchor-link" href="#using-probes">#</a></h3>
+<p>Create a pod that runs the httpd webserver</p>
+<ul>
+<li>The webserver should be offering its services on port 80, and ckad-ns3 namespace</li>
+<li>This pod should use a readiness probe with an initial delay of 60 seconds.</li>
+<li>The probe should check the availability of the webserver document root (path /), before start and during operation as well</li>
+<li>Each probes should get 60 seconds before it is initialized</li>
+</ul>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">liveness-exec</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-ns3</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">liveness</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">httpd</span>
+    <span class="hljs-attr">ports:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">80</span>
+    <span class="hljs-attr">readinessProbe:</span>
+      <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">60</span>
+      <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">60</span>
+      <span class="hljs-attr">exec:</span>
+        <span class="hljs-attr">command:</span> [ <span class="hljs-string">&quot;ls&quot;</span>, <span class="hljs-string">&quot;/&quot;</span> ]
+</code></pre>
+<h3 id="creating-a-deployment" tabindex="-1">Creating a deployment <a class="anchor-link" href="#creating-a-deployment">#</a></h3>
+<p>Write a manifest file with the name nginx-exam.yaml, that meets the following requirements:</p>
+<ul>
+<li>It starts 5 replicas that run the nginx:1.8 image</li>
+<li>Each Pod has the label app=webshop</li>
+<li>Create the Deployment such that the existing Pods are terminated before new Pods are created to replace them</li>
+<li>The Deployment itself should use the label service=nginx</li>
+</ul>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">nginx-deployment</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">app:</span> <span class="hljs-string">webshop</span>
+    <span class="hljs-attr">service:</span> <span class="hljs-string">nginx</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">5</span>
+  <span class="hljs-attr">strategy:</span>
+    <span class="hljs-attr">type:</span> <span class="hljs-string">Recreate</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">webshop</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">webshop</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">nginx:1.8</span>
+</code></pre>
+<h3 id="exposing-services" tabindex="-1">Exposing services <a class="anchor-link" href="#exposing-services">#</a></h3>
+<p>In the ckad-ns6 namespace, create a Deployment that runs the nginx 1.8 image and give it the name nginx-deployment</p>
+<ul>
+<li>Ensure it runs 3 replicas</li>
+<li>After verifying that the Deployment runs successfully, expose it such that users that are external to the cluster can reach it, using the Kubernetes Service object.</li>
+</ul>
+<pre><code class="hljs language-bash">$ k create namespace ckad-ns6
+namespace/ckad-ns6 created
+</code></pre>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">nginx-deployment</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">app:</span> <span class="hljs-string">webshop</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">webshop</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">webshop</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">nginx:1.8</span>
+</code></pre>
+<pre><code class="hljs language-bash">$ k expose deployment nginx-deployment --port=80
+service/nginx-deployment exposed
+</code></pre>
+<h3 id="using-network-policies" tabindex="-1">Using Network Policies <a class="anchor-link" href="#using-network-policies">#</a></h3>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">pod-nw-db</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-ns6</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">role:</span> <span class="hljs-string">db</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">busy</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span>
+    <span class="hljs-attr">args:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/bin/sh</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">-c</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">sleep</span> <span class="hljs-number">3600</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">pod-nw-webserver</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-ns6</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">role:</span> <span class="hljs-string">webserver</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">busy</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">busybox</span>
+    <span class="hljs-attr">args:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/bin/sh</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">-c</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">sleep</span> <span class="hljs-number">3600</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">networking.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">NetworkPolicy</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">db-network-policy</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-ns6</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">podSelector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">role:</span> <span class="hljs-string">db</span>
+  <span class="hljs-attr">policyTypes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">Ingress</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">Egress</span>
+  <span class="hljs-attr">ingress:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">from:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">podSelector:</span>
+        <span class="hljs-attr">matchLabels:</span>
+          <span class="hljs-attr">role:</span> <span class="hljs-string">webserver</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">networking.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">NetworkPolicy</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">ws-network-policy</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-ns6</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">podSelector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">role:</span> <span class="hljs-string">webserver</span>
+  <span class="hljs-attr">policyTypes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">Ingress</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">Egress</span>
+  <span class="hljs-attr">ingress:</span>
+  <span class="hljs-bullet">-</span> {}
+  <span class="hljs-attr">egress:</span>
+  <span class="hljs-bullet">-</span> {}
+</code></pre>
+<h3 id="using-storage" tabindex="-1">Using Storage <a class="anchor-link" href="#using-storage">#</a></h3>
+<pre><code class="hljs language-bash">$ k create ns ckad-1311
+namespace/ckad-1311 created
+</code></pre>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolume</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-number">1311</span><span class="hljs-string">-pv</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-1311</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">capacity:</span>
+    <span class="hljs-attr">storage:</span> <span class="hljs-string">2Gi</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteMany</span>
+  <span class="hljs-attr">hostPath:</span>
+    <span class="hljs-attr">path:</span> <span class="hljs-string">&quot;/tmp&quot;</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-number">1311</span><span class="hljs-string">-pvc</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-1311</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteMany</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">1Gi</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-number">1311</span><span class="hljs-string">-pod</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">ckad-1311</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span>
+    <span class="hljs-attr">volumeMounts:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">mountPath:</span> <span class="hljs-string">&quot;/webdata&quot;</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">data</span>
+  <span class="hljs-attr">volumes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">data</span>
+      <span class="hljs-attr">persistentVolumeClaim:</span>
+        <span class="hljs-attr">claimName:</span> <span class="hljs-number">1311</span><span class="hljs-string">-pvc</span>
+</code></pre>
+  </article>
+  <!-- up button -->
+  <div>
+    <button
+      id="upBtn"
+      aria-label="go to top"
+      style="position:fixed; width:32px; height:32px; border-radius:50%; border:none; background-color:black; right:32px; bottom:32px; color:white; focus:outline-none; cursor:pointer; transition-duration:500ms; opacity:0; pointer-events:none;"
+    ><i class="arrow up"></i></button>
+  </div>
+  <style>
+  .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  </style>
+  <script>
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 250) {
+      upBtn.style.opacity = 1;
+      upBtn.style.pointerEvents = 'auto';     
+    }
+    else {
+      upBtn.style.opacity = 0;
+      upBtn.style.pointerEvents = 'none';
+    }
+  })
+
+  upBtn.addEventListener('click', () => {
+    let start = document.querySelector('.reader-bar-start')
+    start.scrollIntoView({behavior: "smooth"})
+  })
+  </script>
+  <!-- reader bar -->
+  <div id="readerBarContainer" style="height:4px;width:100%;background-color:#fff;position:fixed;top:0px;left:0;z-index:100;transition:0.2s;">
+    <div id="readerBar" style="height:4px;width:0;background-color:rgb(20 184 166);position:fixed;top:0px;left:0;z-index:200;transition:0.2s;"></div>
+  </div>
+  <script>
+    let winH = window.innerHeight;
+    const content = document.querySelector('.reader-bar-start');
+
+    let contentH = content.offsetHeight;
+    let contentS = contentH - winH;
+    let readerBar = document.getElementById('readerBar');
+    window.addEventListener('load', () => {
+      document.addEventListener ('scroll', updateBar);
+    })
+    window.addEventListener('resize', redefine)
+
+    function redefine() {
+      winH = window.innerHeight;
+      contentH = content.offsetHeight;
+      contentS = contentH - winH;
+      updateBar();
+    }
+
+    function updateBar() {
+      const pagePos = window.scrollY; 
+      const updatedBar = pagePos * 100 / contentS;
+      readerBar.style.width = updatedBar + "%";
+    }
+  </script>
+  <div class="mt-12 pt-4 text-gray-600 text-sm border-t border-gray-300">
+    <p>
+      This page is part of the <a href="/blog">blog</a> section.
+    </p>
+  </div>
+</section>
+
+      </div>
+      
+      <script>function btnHandler(e,n){e=document.querySelector(e);e&&e.addEventListener("click",function(e){e.preventDefault(),n()},!1)}btnHandler(".btn-log",function(){console.log("👋 Oh, hello there you!")});</script>
+    </div>
+  </body>
+</html>
+
+
+
