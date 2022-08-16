@@ -2,7 +2,7 @@
 <ul class="flex items-row">
   {% for link in linkList %}
     <li class="pr-1">
-      <a href="{{ link.url }}" class="nav-tab" target="{{ '_blank' if link.external else '_self' }}">
+      <a href="{{ link.url | url }}" class="nav-tab" target="{{ '_blank' if link.external else '_self' }}">
         {% if link.external %}
           {{ link.text }} {% fortawesomeRegular 'edit', 'w-4 h-4' %}
         {% else %}
