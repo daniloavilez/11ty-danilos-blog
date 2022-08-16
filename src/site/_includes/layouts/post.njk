@@ -10,17 +10,14 @@ templateEngineOverride: njk, md
     About {{ content | readingTime }} reading time
   </div>
   <hr>
-  <aside>
+  <aside class="mb-2">
     {{ content | toc | safe }}
   </aside>
   <hr>
-  <div class="mt-2 mb-4 text-lg font-medium">
-    {{ content | section | safe }}
-  </div>
-  <article>
+  <article class="mt-4">
     {{ content | safe }}
   </article>
-  {% readerBar "4px", "rgb(20 184 166)", "#fff", "0px"  %}
+  {% readerBar "4px", "#fff", "rgb(20 184 166)", "0px"  %}
   <div class="mt-12 pt-4 text-gray-600 text-sm border-t border-gray-300">
     <p>
       This page is part of the <a href="/blog">blog</a> section.

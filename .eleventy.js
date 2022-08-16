@@ -31,14 +31,14 @@ const mdAnchorOpts = {
 module.exports = function (eleventyConfig) {
 
   // Customized by Danilo Avilez
+  eleventyConfig.addPlugin(pluginTOC);
+
   eleventyConfig.setLibrary(
     'md',
     markdownIt(mdOptions)
       .use(markdownItAnchor, mdAnchorOpts)
       .use(markdownItHighlightJS)
   );
-
-  eleventyConfig.addPlugin(pluginTOC);
 
   eleventyConfig.addPlugin(fortawesomeFreeRegularPlugin);
   eleventyConfig.addPlugin(readingTime);
@@ -81,6 +81,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("./src/site/fonts");
   eleventyConfig.addPassthroughCopy("./src/site/images");
   eleventyConfig.addPassthroughCopy("./src/site/css");
+  eleventyConfig.addPassthroughCopy("./src/site/blog/images")
 
   return {
     dir: {

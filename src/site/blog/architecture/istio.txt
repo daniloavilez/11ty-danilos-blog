@@ -1,0 +1,12 @@
+---
+title: Istio Notes
+date: 2020-07-08
+description:
+    Istio how it works, configurations.
+---
+
+# Istio
+
+Source code of [ProductPage](https://github.com/istio/istio/tree/master/samples/bookinfo/src/productpage)
+
+ProductPage is a demo app created to illustrate Istio features. 

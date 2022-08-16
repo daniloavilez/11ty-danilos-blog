@@ -3,7 +3,7 @@ title: CKAD Notes
 date: 2020-02-27
 ---
 
-# Certified Kubernetes Application Developer (CKAD)
+My notes for CKAD Exam
 <!--more-->
 
 ## Curriculum

@@ -6,7 +6,7 @@
   Content sections conventions
 */
 section {
-  @apply pb-10;
+  @apply pb-8;
   @apply px-4;
 }
 
@@ -17,10 +17,17 @@ p+p {
 /*
   Global headings conventions
 */
-h1.heading {
-  @apply text-3xl;
+h1 {
   @apply text-gray-900;
   @apply font-semibold;
+}
+
+h2,
+h3,
+h4 {
+  @apply text-gray-900;
+  @apply font-semibold;
+  @apply mt-2
 }
 
 @screen md {
@@ -50,7 +57,7 @@ a.naked-link:visited {
 
 .content ul,
 .content ol {
-  @apply my-6;
+  @apply mt-2;
 }
 
 .content li {
@@ -60,14 +67,7 @@ a.naked-link:visited {
 
 .content ol li {
   @apply list-decimal;
-  @apply pl-2;
-}
 
-code {
-  @apply bg-gray-200;
-  @apply text-sm;
-  @apply p-1;
-  @apply rounded;
 }
 
 /*

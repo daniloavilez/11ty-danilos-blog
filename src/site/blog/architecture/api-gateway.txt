@@ -1,0 +1,16 @@
+---
+title: API Gateway Notes
+date: 2019-04-31
+description:
+    API Gateway
+---
+
+# API Gateway
+
+# References
+
+Netflix Zuul
+https://github.com/Netflix/zuul
+
+Presentation about `Netflix Zuul`
+https://www.slideshare.net/MikeyCohen1/zuul-netflix-springone-platform
