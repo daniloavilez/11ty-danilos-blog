@@ -1,12 +1,12 @@
 {
-  "name": "ElevenTail",
+  "name": "daniloavilez",
   "version": "0.1.0",
   "description": "A project scaffold for quick-starting a site with Eleventy and TailwindCSS",
-  "author": "Phil Hawksworth",
+  "author": "Danilo Avilez",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/philhawksworth/eleventail"
+    "url": "https://github.com/daniloavilez/11ty-danilos-blog"
   },
   "scripts": {
     "build": "npm-run-all build:css build:html",

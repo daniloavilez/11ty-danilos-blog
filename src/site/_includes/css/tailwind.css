@@ -90,6 +90,13 @@ a.naked-link:visited {
 }
 
 
+code:not([class]) {
+  @apply bg-gray-400;
+  @apply text-sm;
+  @apply p-1;
+  @apply rounded;
+}
+
 .filter-bw-800 {
   filter: grayscale(0.8);
 }

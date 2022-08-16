@@ -2,17 +2,17 @@
 <header class="bg-teal-500 flex justify-between px-4 py-2 mb-10">
   <h1 class=" text-white font-medium text-2xl"><a href="/" class="">Danilo Avilez</a></h1>
   
-  {# <nav>
-    {%
-      set linkList = [
-        { "url": "/about" , "text": "About"},
-        { "url": "/blog" , "text": "Blog"},
-        { "url": "https://github.com/daniloavilez" , "text": "GitHub", "external": true},
-        { "url": "https://www.linkedin.com/in/daniloavilez/" , "text": "Linkedin", "external": true}
-      ]
-    %}
-    {% include "navigation-links.njk" %}
-  </nav> #}
+  {% if page.url != "/" %}
+    <nav>
+      {%
+        set linkList = [
+          { "url": "/about" , "text": "About"},
+          { "url": "/blog" , "text": "Blog"}
+        ]
+      %}
+      {% include "navigation-links.njk" %}
+    </nav>
+  {% endif %}
 </header>
 
 
