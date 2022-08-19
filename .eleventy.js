@@ -2,8 +2,8 @@ const { DateTime } = require('luxon');
 const util = require('util');
 
 const {
-  fortawesomeFreeRegularPlugin,
-} = require('@vidhill/fortawesome-free-regular-11ty-shortcode');
+  fortawesomeBrandsPlugin,
+} = require('@vidhill/fortawesome-brands-11ty-shortcode');
 
 const readingTime = require('eleventy-plugin-reading-time');
 
@@ -40,7 +40,8 @@ module.exports = function (eleventyConfig) {
       .use(markdownItHighlightJS)
   );
 
-  eleventyConfig.addPlugin(fortawesomeFreeRegularPlugin);
+  eleventyConfig.addPlugin(fortawesomeBrandsPlugin);
+
   eleventyConfig.addPlugin(readingTime);
 
   eleventyConfig.addPlugin(readerBar);

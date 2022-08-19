@@ -20,7 +20,7 @@
   "dependencies": {
     "@11ty/eleventy": "^0.9.0",
     "@fullhuman/postcss-purgecss": "^1.3.0",
-    "@vidhill/fortawesome-free-regular-11ty-shortcode": "^1.0.3",
+    "@vidhill/fortawesome-brands-11ty-shortcode": "^1.0.2",
     "autoprefixer": "^9.7.2",
     "cssnano": "^4.1.10",
     "eleventy-plugin-reader-bar": "^0.2.1",

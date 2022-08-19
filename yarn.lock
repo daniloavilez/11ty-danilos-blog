@@ -62,10 +62,10 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.3.0"
 
-"@fortawesome/free-regular-svg-icons@^5.15.3":
+"@fortawesome/free-brands-svg-icons@^5.15.3":
   version "5.15.4"
-  resolved "https://registry.yarnpkg.com/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-5.15.4.tgz#b97edab436954333bbeac09cfc40c6a951081a02"
-  integrity sha512-9VNNnU3CXHy9XednJ3wzQp6SwNwT3XaM26oS4Rp391GsxVYA+0oDR2J194YCIWf7jNRCYKjUCOduxdceLrx+xw==
+  resolved "https://registry.yarnpkg.com/@fortawesome/free-brands-svg-icons/-/free-brands-svg-icons-5.15.4.tgz#ec8a44dd383bcdd58aa7d1c96f38251e6fec9733"
+  integrity sha512-f1witbwycL9cTENJegcmcZRYyawAFbm8+c6IirLmwbbpqz46wyjbQYLuxOc7weXFXfB7QR8/Vd2u5R3q6JYD9g==
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.36"
 
@@ -194,12 +194,12 @@
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.35"
 
-"@vidhill/fortawesome-free-regular-11ty-shortcode@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@vidhill/fortawesome-free-regular-11ty-shortcode/-/fortawesome-free-regular-11ty-shortcode-1.0.3.tgz#70e95dadb51fc7a82830ec1f71464250bb4e8af3"
-  integrity sha512-E3mNiZV8lWt9onzHs6raVxF9/WYEWRNP0G5ByWP3D8QfYjwiLh2r4nXzP/SystWCSotIIXfPFx+WkzhHCFXx9A==
+"@vidhill/fortawesome-brands-11ty-shortcode@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@vidhill/fortawesome-brands-11ty-shortcode/-/fortawesome-brands-11ty-shortcode-1.0.2.tgz#26b686eb4223e5cff5df3861a3aa45eaab68582f"
+  integrity sha512-6hNSAa/lWLc9QVN/yHTtXt2Apy5ojloc7BKiGUwqylth2y/H3TfN+HHSDVkgp4Cxe9vDJNjIn+WLaPHlvr9lOA==
   dependencies:
-    "@fortawesome/free-regular-svg-icons" "^5.15.3"
+    "@fortawesome/free-brands-svg-icons" "^5.15.3"
     "@vidhill/fortawesome-11ty-shortcode-helper" "^1.0.1"
 
 a-sync-waterfall@^1.0.0:

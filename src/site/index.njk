@@ -7,10 +7,11 @@ layout: default
   <span class="text-2xl pb-2">Learn more <a href="{{ '/about' | url }}">about me</a></span>
   <span class="text-2xl pb-2">Read my <a href="{{ '/blog' | url }}">blog</a></span>
 </div>
-<div class="p-4 bg-teal-500 text-white ">  
-  <p class="text-right text-md leading-tight">
-    <a href="https://www.linkedin.com/in/daniloavilez/" target="_noblank">Linkedin</a> |
-    <a href="https://github.com/daniloavilez" target="_noblank">Github</a> |
-    Danilo Avilez - 2022
-  </p>
+<div class="flex flex-row gap-2 p-4 bg-teal-500 text-white ">  
+    <a href="https://www.linkedin.com/in/daniloavilez/" class="naked-link" target="_noblank">{% fortawesomeBrand 'linkedin', 'w-4 h-4' %}</a> 
+    <a href="https://github.com/daniloavilez" class="naked-link" target="_noblank">{% fortawesomeBrand 'github', 'w-4 h-4' %}</a> 
+    <a href="https://www.reddit.com/user/dghun" class="naked-link" target="_noblank">{% fortawesomeBrand 'reddit', 'w-4 h-4' %}</a> 
+    <div class="ml-auto">
+      Danilo Avilez - 2022
+    </div>
 </div>
