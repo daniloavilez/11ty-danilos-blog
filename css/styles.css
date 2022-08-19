@@ -695,8 +695,8 @@ a.naked-link:visited {
 
 code:not([class]) {
   --bg-opacity: 1;
-  background-color: #cbd5e0;
-  background-color: rgba(203, 213, 224, var(--bg-opacity));
+  background-color: #edf2f7;
+  background-color: rgba(237, 242, 247, var(--bg-opacity));
   font-size: 0.875rem;
   padding: 0.25rem;
   border-radius: 0.25rem;
