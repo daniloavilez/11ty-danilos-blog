@@ -22,7 +22,7 @@ const mdOptions = {
   typographer: true
 }
 const mdAnchorOpts = {
-  permalink: true,
+  permalink: false,
   permalinkClass: 'anchor-link',
   permalinkSymbol: '#',
   level: [1, 2, 3, 4]
