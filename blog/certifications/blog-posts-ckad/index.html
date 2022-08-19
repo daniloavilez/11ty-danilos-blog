@@ -63,7 +63,7 @@
   <article class="mt-4">
     <p>My notes for CKAD Exam</p>
 <!--more-->
-<h2 id="curriculum" tabindex="-1">Curriculum <a class="anchor-link" href="#curriculum">#</a></h2>
+<h2 id="curriculum" tabindex="-1">Curriculum</h2>
 <ul>
 <li>Core Concepts - 13%</li>
 <li>Multi-Container Pods - 10%</li>
@@ -73,7 +73,7 @@
 <li>Observability - 18%</li>
 <li>State Persistence - 8%</li>
 </ul>
-<h2 id="exam-environment" tabindex="-1">Exam Environment <a class="anchor-link" href="#exam-environment">#</a></h2>
+<h2 id="exam-environment" tabindex="-1">Exam Environment</h2>
 <p>Tools to need to be familiar with to get succeeded:</p>
 <ul>
 <li>
@@ -97,17 +97,17 @@
 </ul>
 <p><code>kubectl get ns</code> - Usage of <code>ns</code> instead of <code>namespaces</code></p>
 <p><code>kubectl describe pvc claim</code> - Usage of <code>pvc</code> instead of <code>persistentvolumeclaim</code></p>
-<h3 id="deleting-k8s-objects" tabindex="-1">Deleting K8S Objects <a class="anchor-link" href="#deleting-k8s-objects">#</a></h3>
+<h3 id="deleting-k8s-objects" tabindex="-1">Deleting K8S Objects</h3>
 <p><code>$ kubectl delete pod nginx --grace-period=0 --force</code></p>
-<h3 id="finding-object-information" tabindex="-1">Finding Object Information <a class="anchor-link" href="#finding-object-information">#</a></h3>
+<h3 id="finding-object-information" tabindex="-1">Finding Object Information</h3>
 <p>Filter configuration. Grep is great here!</p>
 <p><code>$ kubectl get pods -o yaml | grep -C 5 labels:</code></p>
-<h3 id="using-an-alias-for-kubectl" tabindex="-1">Using an Alias for kubectl <a class="anchor-link" href="#using-an-alias-for-kubectl">#</a></h3>
+<h3 id="using-an-alias-for-kubectl" tabindex="-1">Using an Alias for kubectl</h3>
 <pre><code class="hljs language-bash">$ <span class="hljs-built_in">alias</span> k=kubectl
 $ k version
 </code></pre>
-<h2 id="sample-exam" tabindex="-1">Sample Exam <a class="anchor-link" href="#sample-exam">#</a></h2>
-<h3 id="pods" tabindex="-1">Pods <a class="anchor-link" href="#pods">#</a></h3>
+<h2 id="sample-exam" tabindex="-1">Sample Exam</h2>
+<h3 id="pods" tabindex="-1">Pods</h3>
 <p>Create a namespace ckad-ns1. In this namespace, run the following pods:</p>
 <ul>
 <li>A pod with the name pod-a, running the httpd server image</li>
@@ -137,10 +137,10 @@ $ k version
   <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">rsyslog-q2-ckad</span>
     <span class="hljs-attr">image:</span> <span class="hljs-string">rsyslog/syslog_appliance_alpine</span>
 </code></pre>
-<h3 id="finding-pods" tabindex="-1">Finding pods <a class="anchor-link" href="#finding-pods">#</a></h3>
+<h3 id="finding-pods" tabindex="-1">Finding pods</h3>
 <p>Which command would you use to find all Deployments that have the label ‘app’ set to ‘nginx’</p>
 <p>A.: <code>kubectl get deployments.apps --selector app=nginx</code></p>
-<h3 id="configmaps" tabindex="-1">ConfigMaps <a class="anchor-link" href="#configmaps">#</a></h3>
+<h3 id="configmaps" tabindex="-1">ConfigMaps</h3>
 <p>In the ckad-ns2 Namespace, run a Pod with the name alpine-pod. This Pod should run a container based on the alpine image. In this container, two variables must be set:</p>
 <ul>
 <li>‘localport’ is set to ‘localhost:8082’</li>
@@ -186,7 +186,7 @@ namespace/ckad-ns2 created
         <span class="hljs-comment">#      name: alpine-config</span>
         <span class="hljs-comment">#      key: external_url</span>
 </code></pre>
-<h3 id="sidecars" tabindex="-1">Sidecars <a class="anchor-link" href="#sidecars">#</a></h3>
+<h3 id="sidecars" tabindex="-1">Sidecars</h3>
 <p>Create a multi-container pod with the name sidecar_pod, that runs in the ckad-ns3 namespace.</p>
 <ul>
 <li>The primary container is running BusyBox, and writes the output of the date command to the /var/log/date.log file every 5 seconds.</li>
@@ -226,10 +226,10 @@ namespace/ckad-ns3 created
   <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">varlog</span>
     <span class="hljs-attr">emptyDir:</span> {}
 </code></pre>
-<h3 id="inspecting-containers" tabindex="-1">Inspecting containers <a class="anchor-link" href="#inspecting-containers">#</a></h3>
+<h3 id="inspecting-containers" tabindex="-1">Inspecting containers</h3>
 <p>The pod my-server is running 3 containers: file-server, log-server and db-server. When starting it, the log-server fails. Which command should you use to analyze why it is going wrong?</p>
 <p><code>kubectl logs my-server log-server</code></p>
-<h3 id="using-probes" tabindex="-1">Using probes <a class="anchor-link" href="#using-probes">#</a></h3>
+<h3 id="using-probes" tabindex="-1">Using probes</h3>
 <p>Create a pod that runs the httpd webserver</p>
 <ul>
 <li>The webserver should be offering its services on port 80, and ckad-ns3 namespace</li>
@@ -254,7 +254,7 @@ namespace/ckad-ns3 created
       <span class="hljs-attr">exec:</span>
         <span class="hljs-attr">command:</span> [ <span class="hljs-string">&quot;ls&quot;</span>, <span class="hljs-string">&quot;/&quot;</span> ]
 </code></pre>
-<h3 id="creating-a-deployment" tabindex="-1">Creating a deployment <a class="anchor-link" href="#creating-a-deployment">#</a></h3>
+<h3 id="creating-a-deployment" tabindex="-1">Creating a deployment</h3>
 <p>Write a manifest file with the name nginx-exam.yaml, that meets the following requirements:</p>
 <ul>
 <li>It starts 5 replicas that run the nginx:1.8 image</li>
@@ -285,7 +285,7 @@ namespace/ckad-ns3 created
       <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
         <span class="hljs-attr">image:</span> <span class="hljs-string">nginx:1.8</span>
 </code></pre>
-<h3 id="exposing-services" tabindex="-1">Exposing services <a class="anchor-link" href="#exposing-services">#</a></h3>
+<h3 id="exposing-services" tabindex="-1">Exposing services</h3>
 <p>In the ckad-ns6 namespace, create a Deployment that runs the nginx 1.8 image and give it the name nginx-deployment</p>
 <ul>
 <li>Ensure it runs 3 replicas</li>
@@ -317,7 +317,7 @@ namespace/ckad-ns6 created
 <pre><code class="hljs language-bash">$ k expose deployment nginx-deployment --port=80
 service/nginx-deployment exposed
 </code></pre>
-<h3 id="using-network-policies" tabindex="-1">Using Network Policies <a class="anchor-link" href="#using-network-policies">#</a></h3>
+<h3 id="using-network-policies" tabindex="-1">Using Network Policies</h3>
 <pre><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
 <span class="hljs-attr">metadata:</span>
@@ -385,7 +385,7 @@ service/nginx-deployment exposed
   <span class="hljs-attr">egress:</span>
   <span class="hljs-bullet">-</span> {}
 </code></pre>
-<h3 id="using-storage" tabindex="-1">Using Storage <a class="anchor-link" href="#using-storage">#</a></h3>
+<h3 id="using-storage" tabindex="-1">Using Storage</h3>
 <pre><code class="hljs language-bash">$ k create ns ckad-1311
 namespace/ckad-1311 created
 </code></pre>

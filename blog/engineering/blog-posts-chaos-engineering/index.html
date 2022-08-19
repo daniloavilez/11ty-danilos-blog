@@ -63,8 +63,8 @@
   <article class="mt-4">
     <p>My notes for Chaos Engineering</p>
 <!--more-->
-<h2 id="using-docker-and-gremlin" tabindex="-1">Using Docker and Gremlin <a class="anchor-link" href="#using-docker-and-gremlin">#</a></h2>
-<h3 id="installing-docker-(opensuse)" tabindex="-1">Installing Docker (OpenSUSE) <a class="anchor-link" href="#installing-docker-(opensuse)">#</a></h3>
+<h2 id="using-docker-and-gremlin" tabindex="-1">Using Docker and Gremlin</h2>
+<h3 id="installing-docker-(opensuse)" tabindex="-1">Installing Docker (OpenSUSE)</h3>
 <p>Install docker and docker-compose</p>
 <p><code>zypper install docker docker-compose</code></p>
 <p>Start docker daemon, docker daemon will be started during booting</p>
@@ -72,7 +72,7 @@
 <p>Join docker group in order to use the docker daemon</p>
 <p><code>sudo usermod -G docker -a YOURUSERNAME</code></p>
 <p>Now ‘Log out’ and ‘Log in’ again. Ok, we’re done so far!! :)</p>
-<h3 id="creating-an-htop-container" tabindex="-1">Creating an htop container <a class="anchor-link" href="#creating-an-htop-container">#</a></h3>
+<h3 id="creating-an-htop-container" tabindex="-1">Creating an htop container</h3>
 <p>Now we’re going to create a htop container, this container will serve as a resource observable of others containers.</p>
 <p>Let’s create a <code>Dockerfile</code></p>
 <p><code>vi Dockerfile</code></p>
@@ -85,7 +85,7 @@ ENTRYPOINT [<span class="hljs-string">&quot;htop&quot;</span>]
 <p><code>sudo docker build -t htop .</code></p>
 <p>If you want to test this container, we can run this command below:</p>
 <p><code>docker run -it --rm --pid=host htop</code></p>
-<h3 id="creating-an-nginx-container" tabindex="-1">Creating an Nginx container <a class="anchor-link" href="#creating-an-nginx-container">#</a></h3>
+<h3 id="creating-an-nginx-container" tabindex="-1">Creating an Nginx container</h3>
 <p>We’re going to create a directory and inside it, we will add our fake web site</p>
 <pre><code class="hljs language-shell">mkdir -p nginx/html
 cd nginx/html
@@ -112,7 +112,7 @@ cd nginx/html
 </code></pre>
 <p>Run the command, this will create a container <code>nginx</code></p>
 <p><code>sudo docker run -l service=nginx --name docker-nginx -p 80:80 -d -v /docker-nginx/html:/usr/share/nginx/html nginx</code></p>
-<h3 id="monitoring-nginx-container" tabindex="-1">Monitoring nginx container <a class="anchor-link" href="#monitoring-nginx-container">#</a></h3>
+<h3 id="monitoring-nginx-container" tabindex="-1">Monitoring nginx container</h3>
 <p>Now it’s time to use our htop container to monitoring our nginx container</p>
 <p><code>docker run -it --rm --pid=container:docker-nginx htop</code></p>
   </article>

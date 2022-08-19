@@ -63,15 +63,15 @@
   <article class="mt-4">
     <p>My notes for K8S</p>
 <!--more-->
-<h2 id="how-kubernetes-provisioning-an-vm-(minikube)%3F" tabindex="-1">How kubernetes provisioning an VM (minikube)? <a class="anchor-link" href="#how-kubernetes-provisioning-an-vm-(minikube)%3F">#</a></h2>
+<h2 id="how-kubernetes-provisioning-an-vm-(minikube)%3F" tabindex="-1">How kubernetes provisioning an VM (minikube)?</h2>
 <p>Kubernetes uses <code>libmachine</code> to provision an VM, and <code>kubeadm</code> install a Kubernetes cluster.</p>
 <p>Inside of this VM created, there are Kubernetes cluster and Docker daemon. Docker is used to pull new images from Docker Registry.</p>
-<h2 id="install-and-set-up-kubectl-and-minikube" tabindex="-1">Install and Set up Kubectl and Minikube <a class="anchor-link" href="#install-and-set-up-kubectl-and-minikube">#</a></h2>
+<h2 id="install-and-set-up-kubectl-and-minikube" tabindex="-1">Install and Set up Kubectl and Minikube</h2>
 <p>To check if virtualization is supported on Linux, run the following command and verify that the output is non-empty:</p>
 <p><code>egrep --color 'vmx|svm' /proc/cpuinfo</code></p>
 <p><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux">Install Kubectl</a></p>
 <p><a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Installing Minikube</a></p>
-<h2 id="basic-commands" tabindex="-1">Basic Commands <a class="anchor-link" href="#basic-commands">#</a></h2>
+<h2 id="basic-commands" tabindex="-1">Basic Commands</h2>
 <p>Start minikube (Cluster)</p>
 <p><code>minikube start</code></p>
 <p>Create a deployment</p>
@@ -108,13 +108,13 @@
 <p><code>kubectl get svc</code></p>
 <p>Check persistent volumes available</p>
 <p><code>kubectl get persistentvolumes</code></p>
-<h3 id="auto-scaling" tabindex="-1">Auto-Scaling <a class="anchor-link" href="#auto-scaling">#</a></h3>
+<h3 id="auto-scaling" tabindex="-1">Auto-Scaling</h3>
 <p><code>kubectl autoscale deployment wordpress --cpu-percent=50 --min=1 --max=5</code></p>
 <p>Simulate over loading on containers</p>
 <p><code>kubectl run -i --tty load-generator --image=busybox /bin/sh</code></p>
 <p><a href="https://en.wikipedia.org/wiki/BusyBox">What is BusyBox?</a></p>
-<h2 id="service" tabindex="-1">Service <a class="anchor-link" href="#service">#</a></h2>
-<h3 id="headless-service" tabindex="-1">Headless Service <a class="anchor-link" href="#headless-service">#</a></h3>
+<h2 id="service" tabindex="-1">Service</h2>
+<h3 id="headless-service" tabindex="-1">Headless Service</h3>
 <blockquote>
 <p>Each connection to the service is forwarded to one randomly selected backing pod. But what if the client needs to connect to all of those pods? What if the backing pods themselves need to each connect to all the other backing pods. Connecting through the service clearly isn’t the way to do this. What is?</p>
 <p>For a client to connect to all pods, it needs to figure out the the IP of each individual pod. One option is to have the client call the Kubernetes API server and get the list of pods and their IP addresses through an API call, but because you should always strive to keep your apps Kubernetes-agnostic, using the API server isn’t ideal</p>
@@ -122,18 +122,18 @@
 <p>Setting the clusterIP field in a service spec to None makes the service headless, as Kubernetes won’t assign it a cluster IP through which clients could connect to the pods backing it.</p>
 <p>“Kubernetes in Action” by Marco Luksa</p>
 </blockquote>
-<h3 id="secrets" tabindex="-1">Secrets <a class="anchor-link" href="#secrets">#</a></h3>
+<h3 id="secrets" tabindex="-1">Secrets</h3>
 <p>Create a secret password</p>
 <p><code>kubectl create secret generic mysql-pass --from-literal=password=AMuchBetterWayToStoreAPassword</code></p>
 <p>Check secrets created</p>
 <p><code>kubectl get secrets</code></p>
 <p>Decoding a secret</p>
 <p><code>kubectl get secrets mysql-pass -o yaml</code></p>
-<h3 id="auditing" tabindex="-1">Auditing <a class="anchor-link" href="#auditing">#</a></h3>
+<h3 id="auditing" tabindex="-1">Auditing</h3>
 <p><a href="https://kubernetes.io/docs/tasks/debug-application-cluster/audit">Auditing K8s</a></p>
 <!-- ## Kubernetes Architecture
-<h3 id="components" tabindex="-1">Components <a class="anchor-link" href="#components">#</a></h3>
-<h4 id="master-components" tabindex="-1">Master Components <a class="anchor-link" href="#master-components">#</a></h4>
+<h3 id="components" tabindex="-1">Components</h3>
+<h4 id="master-components" tabindex="-1">Master Components</h4>
 <h5>kube-apiserver</h5>
 <p>Component on the master that exposes Kubernetes API. It is the front-end for the Kubernetes control plane.</p>
 <h5>etcd</h5>
@@ -150,30 +150,30 @@
 <li>Endpoints Controller: Populates the Endpoints object (that is, joins Services &amp; Pods).</li>
 <li>Service Account &amp; Token Controllers: Create default accounts and API access tokens for new namespaces.</li>
 </ul>
-<h3 id="node-components" tabindex="-1">Node Components <a class="anchor-link" href="#node-components">#</a></h3>
-<h4 id="kubelet" tabindex="-1">kubelet <a class="anchor-link" href="#kubelet">#</a></h4>
+<h3 id="node-components" tabindex="-1">Node Components</h3>
+<h4 id="kubelet" tabindex="-1">kubelet</h4>
 <p>An agent that runs on each node in the cluster. It makes sure that containers are running in a pod.</p>
 <p>The kubelet takes a set of PodSpecs that are provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy. The kubelet doesn’t manage containers which were not created by Kubernetes.</p>
-<h4 id="kube-proxy" tabindex="-1">kube-proxy <a class="anchor-link" href="#kube-proxy">#</a></h4>
+<h4 id="kube-proxy" tabindex="-1">kube-proxy</h4>
 <p>kube-proxy is a network proxy that runs on each node in your cluster, implementing part of the Kubernetes ServiceA way to expose an application running on a set of Pods as a network service. concept.</p>
 <p>kube-proxy maintains network rules on nodes. These network rules allow network communication to your Pods from network sessions inside or outside of your cluster.</p>
 <p>kube-proxy uses the operating system packet filtering layer if there is one and it’s available. Otherwise, kube-proxy forwards the traffic itself.</p>
-<h4 id="container-runtime" tabindex="-1">Container Runtime <a class="anchor-link" href="#container-runtime">#</a></h4>
+<h4 id="container-runtime" tabindex="-1">Container Runtime</h4>
 <p>The container runtime is the software that is responsible for running containers.</p>
 <p>Kubernetes supports several container runtimes: Docker, containerd, <a href="https://cri-o.io/">cri-o</a>, rktlet and any implementation of the Kubernetes CRI (Container Runtime Interface).</p>
 <p><img src="https://cri-o.io/assets/images/architecture.png" alt=""></p>
-<h3 id="pods" tabindex="-1">Pods <a class="anchor-link" href="#pods">#</a></h3>
+<h3 id="pods" tabindex="-1">Pods</h3>
 <p>A Pod is a group of one or more containers, with shared storage/network, and a specification how to run the containers.</p>
 <p>Containers within a Pod share an IP address and port space, and can find each other via localhost.</p>
 <p>In terms of <code>Docker</code> constructs, a Pod is modelled as a group of Docker containers with shared namespaces and shared filesystem volumes.</p>
-<h3 id="patterns-of-modular-app-development" tabindex="-1">Patterns of Modular App Development <a class="anchor-link" href="#patterns-of-modular-app-development">#</a></h3>
+<h3 id="patterns-of-modular-app-development" tabindex="-1">Patterns of Modular App Development</h3>
 <p><img src="./images/k8s/multi-container-pod-design.png" alt="Three Patterns"></p>
 <p>Follow is three patterns to be used to create a Pod:</p>
-<h4 id="sidecar-containers" tabindex="-1">Sidecar Containers <a class="anchor-link" href="#sidecar-containers">#</a></h4>
+<h4 id="sidecar-containers" tabindex="-1">Sidecar Containers</h4>
 <p>Example:</p>
 <p>The sidecar container is nginx serving that log file. (In practice, your sidecar is likely to be a log collection container that uploads to external storage.)</p>
 <p><img src="./images/k8s/sidecar-containers.png" alt="Sidecar Pattern"></p>
-<h4 id="adapter-pattern" tabindex="-1">Adapter Pattern <a class="anchor-link" href="#adapter-pattern">#</a></h4>
+<h4 id="adapter-pattern" tabindex="-1">Adapter Pattern</h4>
 <p>Example:</p>
 <p>It defines a main application container which writes<br>
 the current date and system usage information to a log file<br>
@@ -182,13 +182,13 @@ every five seconds.</p>
 reformats it into a structure that a hypothetical monitoring<br>
 service requires.</p>
 <p><img src="./images/k8s/adapter-containers.png" alt="Adapter Pattern"></p>
-<h4 id="ambassador-pattern-(proxy)" tabindex="-1">Ambassador pattern (Proxy) <a class="anchor-link" href="#ambassador-pattern-(proxy)">#</a></h4>
+<h4 id="ambassador-pattern-(proxy)" tabindex="-1">Ambassador pattern (Proxy)</h4>
 <p>Example:</p>
 <p>One of the best use-cases for the ambassador pattern is for providing access to a database. When developing locally, you probably want to use your local database, while your test and production deployments want different databases again.</p>
 <p>The application will always use localhost to communicate with the database, because it will the Ambassador.</p>
 <p><img src="./images/k8s/ambassador-containers.png" alt="Ambassador Pattern"></p>
-<h2 id="kubernetes-concepts" tabindex="-1">Kubernetes Concepts <a class="anchor-link" href="#kubernetes-concepts">#</a></h2>
-<h3 id="health-check" tabindex="-1">Health Check <a class="anchor-link" href="#health-check">#</a></h3>
+<h2 id="kubernetes-concepts" tabindex="-1">Kubernetes Concepts</h2>
+<h3 id="health-check" tabindex="-1">Health Check</h3>
 <ul>
 <li>
 <p>Readiness Probes: To determine when a Pod is “ready” (e.g. after it has started to see when it’s ready and has loaded what it needs to internally in the image and is ready to take requests from external services)</p>
@@ -197,7 +197,7 @@ service requires.</p>
 <p>Liveness Probes: To determine when a Pod is “healthy” or “unhealthy” after it has become ready</p>
 </li>
 </ul>
-<h2 id="usage-%26-resource-monitoring" tabindex="-1">Usage &amp; Resource Monitoring <a class="anchor-link" href="#usage-%26-resource-monitoring">#</a></h2>
+<h2 id="usage-%26-resource-monitoring" tabindex="-1">Usage &amp; Resource Monitoring</h2>
 <p><code>Heapster</code> has been deprecated.</p>
 <p><s><code>Heapster</code> uses <code>InfluxDB</code> and <code>Grafana</code>. <code>InfluxDB</code> is used to store data for <code>Grafana</code></s></p>
 <p><s>Enable add on <code>heapster</code></s></p>
@@ -209,15 +209,15 @@ service requires.</p>
 <p>An interest open-source OpsView for K8S is <a href="https://github.com/hjacobs/kube-ops-view">kube-ops-view</a>.</p>
 <p>It gave a operational picture of nodes, pods and each container inside of these pods.</p>
 <p>There are many other including some paid like <code>New Relic</code>. --&gt;</p>
-<h2 id="troubleshooting-commands" tabindex="-1">Troubleshooting commands <a class="anchor-link" href="#troubleshooting-commands">#</a></h2>
+<h2 id="troubleshooting-commands" tabindex="-1">Troubleshooting commands</h2>
 <p>Check logs deployment</p>
 <p><code>kubectl logs -l app=wordpress (labels)</code></p>
-<h2 id="curious-things" tabindex="-1">Curious Things <a class="anchor-link" href="#curious-things">#</a></h2>
-<h3 id="namespace-%26-resource-quotas" tabindex="-1">Namespace &amp; Resource Quotas <a class="anchor-link" href="#namespace-%26-resource-quotas">#</a></h3>
+<h2 id="curious-things" tabindex="-1">Curious Things</h2>
+<h3 id="namespace-%26-resource-quotas" tabindex="-1">Namespace &amp; Resource Quotas</h3>
 <p>If a deployment doesn’t have enough memory or cpu to set up. It will fail. For example:</p>
 <p>I have a limit of 200m memory, created previously with namespace, and I want to set up 3 containers that request at least 200m per container</p>
 <p>So all the containers will not set up, because it will not pass at the <code>MinimumReplicasUnavailable</code>.</p>
-<h2 id="labs" tabindex="-1">Labs <a class="anchor-link" href="#labs">#</a></h2>
+<h2 id="labs" tabindex="-1">Labs</h2>
 <ul>
 <li>Create YAML that starts a deployment for Nginx, using version 1.8. 3 replicas must go live and should add the label app=nginx.</li>
 </ul>
@@ -308,7 +308,7 @@ Commercial support is available at<br>
 <li>Verify pods or nodes metrics of default namespace</li>
 </ul>
 <p><code>kubectl top pods</code> or <code>kubectl top nodes</code></p>
-<h3 id="helm" tabindex="-1">Helm <a class="anchor-link" href="#helm">#</a></h3>
+<h3 id="helm" tabindex="-1">Helm</h3>
 <ul>
 <li>Add repo bitnami</li>
 </ul>
@@ -317,7 +317,7 @@ Commercial support is available at<br>
 <li>Install chart for <code>MariaDB</code></li>
 </ul>
 <p><code>helm install mydb bitnami/mariadb</code></p>
-<h2 id="references-%26-cheatsheets" tabindex="-1">References &amp; Cheatsheets <a class="anchor-link" href="#references-%26-cheatsheets">#</a></h2>
+<h2 id="references-%26-cheatsheets" tabindex="-1">References &amp; Cheatsheets</h2>
 <p><a href="https://kubernetes.io/docs/reference/kubectl/overview/">Overview Kubectl</a></p>
 <p><a href="https://kubernetes.io/docs">Kubernetes Docs</a></p>
 <p><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/#enabling-shell-autocompletion">Enabling Kubectl Auto Completion</a></p>

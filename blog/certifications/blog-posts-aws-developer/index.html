@@ -63,7 +63,7 @@
   <article class="mt-4">
     <p>My notes for AWS Associate Developer Exam</p>
 <!--more-->
-<h2 id="aws-cli-%26-sdk" tabindex="-1">AWS CLI &amp; SDK <a class="anchor-link" href="#aws-cli-%26-sdk">#</a></h2>
+<h2 id="aws-cli-%26-sdk" tabindex="-1">AWS CLI &amp; SDK</h2>
 <p>They use AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.</p>
 <p>In order to configure CLI, we need to type <code>aws configure</code> and it will ask four questions. We will need ACCESS_KEY_ID and SECRET_ACCESS_KEY.</p>
 <p>Do a command to test:</p>
@@ -81,14 +81,14 @@
     <span class="hljs-string">&quot;Reservations&quot;</span>: []
 }
 </code></pre>
-<h2 id="iam" tabindex="-1">IAM <a class="anchor-link" href="#iam">#</a></h2>
+<h2 id="iam" tabindex="-1">IAM</h2>
 <p>Users, Group, Roles</p>
-<h3 id="users" tabindex="-1">Users <a class="anchor-link" href="#users">#</a></h3>
+<h3 id="users" tabindex="-1">Users</h3>
 <ul>
 <li>Programatic Access</li>
 <li>AWS Management Console Access</li>
 </ul>
-<h3 id="policies" tabindex="-1">Policies <a class="anchor-link" href="#policies">#</a></h3>
+<h3 id="policies" tabindex="-1">Policies</h3>
 <p>Effect<br>
 Action<br>
 Resource<br>
@@ -96,24 +96,24 @@ Condition</p>
 <p>Copy of AWS Policy<br>
 Policy Wizard<br>
 Self-defined</p>
-<h3 id="groups" tabindex="-1">Groups <a class="anchor-link" href="#groups">#</a></h3>
+<h3 id="groups" tabindex="-1">Groups</h3>
 <p>A collection of Users<br>
 Defined by a group Name (not change name because is linked to ARN)</p>
-<h3 id="roles" tabindex="-1">Roles <a class="anchor-link" href="#roles">#</a></h3>
+<h3 id="roles" tabindex="-1">Roles</h3>
 <p>AWS identity with permission policies<br>
 Can be assumed</p>
-<h3 id="identity-providers-(idp)" tabindex="-1">Identity Providers (IdP) <a class="anchor-link" href="#identity-providers-(idp)">#</a></h3>
+<h3 id="identity-providers-(idp)" tabindex="-1">Identity Providers (IdP)</h3>
 <p>Integrate external identity database<br>
 Can assign permissions to users in that external IdP<br>
 Example: Corporate User Directory</p>
-<h4 id="compatible-idps" tabindex="-1">Compatible IdPs <a class="anchor-link" href="#compatible-idps">#</a></h4>
+<h4 id="compatible-idps" tabindex="-1">Compatible IdPs</h4>
 <p>OpenID Connect (OIDC)<br>
 SAML</p>
-<h3 id="iam-access-methods" tabindex="-1">IAM Access Methods <a class="anchor-link" href="#iam-access-methods">#</a></h3>
+<h3 id="iam-access-methods" tabindex="-1">IAM Access Methods</h3>
 <p>AWS Management Console<br>
 AWS CLI<br>
 AWS SDK</p>
-<h2 id="virtual-private-cloud-(vpc)" tabindex="-1">Virtual Private Cloud (VPC) <a class="anchor-link" href="#virtual-private-cloud-(vpc)">#</a></h2>
+<h2 id="virtual-private-cloud-(vpc)" tabindex="-1">Virtual Private Cloud (VPC)</h2>
 <ul>
 <li>VPC dedicated to an AWS account</li>
 <li>Logically isolated from other VPCs</li>
@@ -127,15 +127,15 @@ AWS SDK</p>
 </ul>
 </li>
 </ul>
-<h3 id="networking" tabindex="-1">Networking <a class="anchor-link" href="#networking">#</a></h3>
+<h3 id="networking" tabindex="-1">Networking</h3>
 <p>If EC2 is restarted the private IP is not changed, but public IP will be changed<br>
 Multiple IPs can be assigned to an instance<br>
 Define and attach multiple network interfaces to one instance</p>
-<h3 id="security" tabindex="-1">Security <a class="anchor-link" href="#security">#</a></h3>
+<h3 id="security" tabindex="-1">Security</h3>
 <p>Security Groups<br>
 Network ACLs (Access Control Lists)<br>
 Assign groups to VPC and EC2 instances</p>
-<h4 id="internet-access" tabindex="-1">Internet Access <a class="anchor-link" href="#internet-access">#</a></h4>
+<h4 id="internet-access" tabindex="-1">Internet Access</h4>
 <p>Access from VPC to Internet is via Internet Gateway<br>
 Access to/from Instance with public IP is via Internet Gateway<br>
 Instance with only Private IP address cannot access Internet but can talk to eaxh other<br>
