@@ -1,8 +1,7 @@
 ---
 title: Service Discovery Notes
 date: 2019-01-09
-description:
-    Service Discovery how it works, configurations.
+thumbnail_url: https://picsum.photos/id/700/640/480
 ---
 
 Notes about Service Discovery

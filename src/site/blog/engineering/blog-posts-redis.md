@@ -1,8 +1,7 @@
 ---
 title: Redis Notes
 date: 2019-07-16
-description:
-    Redis Concepts and Commands
+thumbnail_url: https://picsum.photos/id/220/640/480
 ---
 
 My notes for Redis database

@@ -1,8 +1,10 @@
 ---
 title: Azure Web Services
 date: 2020-09-22
-description:
-    Azure Studies
+thumbnail_url: https://picsum.photos/id/640/640/480
+tags:
+    - post
+    - azure
 ---
 
 My notes for Aure Cloud

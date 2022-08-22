@@ -1,8 +1,7 @@
 ---
 title: Kafka Notes
 date: 2019-01-09
-description:
-    Some kafka notes about creation of topics, explain about offset, partitions and replicas.
+thumbnail_url: https://picsum.photos/id/204/640/480
 ---
 
 My notes for Kafka

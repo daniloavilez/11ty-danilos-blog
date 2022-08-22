@@ -1,8 +1,8 @@
 ---
 title: AWS Cloud Practitioner
 date: 2020-03-09
-description:
-    AWS Cloud Practitioner Study
+thumbnail_url: https://picsum.photos/id/642/640/480
+
 ---
 
 My notes for AWS Cloud Practitioner Exam

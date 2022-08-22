@@ -1,8 +1,7 @@
 ---
 title: Kubernetes Notes
 date: 2019-07-16
-description:
-    Kubernetes Concepts and Commands
+thumbnail_url: https://picsum.photos/id/211/640/480
 ---
 
 My notes for K8S

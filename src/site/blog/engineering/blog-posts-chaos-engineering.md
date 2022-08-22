@@ -1,8 +1,7 @@
 ---
 title: Chaos Engineering Notes
 date: 2019-05-17
-description:
-    Chaos engineering using Docker and Gremlin.
+thumbnail_url: https://picsum.photos/id/200/640/480
 ---
 
 My notes for Chaos Engineering
