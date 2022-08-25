@@ -1,0 +1,33 @@
+---
+title: Danilo Avilez - Books
+layout: default
+---
+
+<section>
+  <h1 class="heading">Books</h1>
+  <p>
+    All of these entries are posts in a collection
+  </p>
+  <h2>Currently reading</h2>
+    {% for row in books %}
+        {% if row.Bookshelves === 'currently-reading' %}
+            {{ row.Title }} by {{ row.Author }}
+        {% endif %}
+    {% endfor %}
+  <h2>To read</h2>
+    <ul>
+    {% for row in books %}
+        {% if row.Bookshelves === 'to-read' %}
+            <li>{{ row.Title }} by {{ row.Author }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+  <h2>Read</h2>
+  <ul>
+  {% for row in books %}
+    {% if row.Bookshelves === '' %}
+        <li>{{ row.Title }} by {{ row.Author }}</li>
+    {% endif %}
+  {% endfor %}
+  <ul>
+</section>

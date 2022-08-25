@@ -13,6 +13,8 @@ const markdownIt = require('markdown-it');
 const markdownItAnchor = require('markdown-it-anchor');
 const markdownItHighlightJS = require('markdown-it-highlightjs');
 
+const { parse } = require("csv-parse/sync");
+
 const pluginTOC = require('eleventy-plugin-toc');
 
 const mdOptions = {
@@ -45,6 +47,14 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(readingTime);
 
   eleventyConfig.addPlugin(readerBar);
+
+  eleventyConfig.addDataExtension("csv", (contents) => {
+    const records = parse(contents, {
+      columns: true,
+      skip_empty_lines: true,
+    });
+    return records;
+  });
 
   // Layout aliases for convenience
   eleventyConfig.addLayoutAlias('default', 'layouts/base.njk');
