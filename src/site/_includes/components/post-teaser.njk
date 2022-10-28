@@ -1,21 +1,21 @@
     <a href="{{ item.url | url }}" class="naked-link">
-      <div class="max-w-sm rounded overflow-hidden shadow-lg">
-      <img class="w-full" src="{{ item.data.thumbnail_url }}" alt="Sunset in the mountains">
-      <div class="px-6 py-2">
-        <div class="font-bold text-xl mb-2">{{ item.data.title }}</div>
-        <p class="text-sm text-gray-600">{{ item.date | readableDate }}</p>
-        <p class="text-gray-700 text-base">
-          {{ item.templateContent | section | safe }}
-        </p>
+      <div class="rounded-md shadow-md">
+        <img class="w-full" src="{{ item.data.thumbnail_url }}" alt="">
+        <div class="p-2">
+          <div class="font-bold text-lg">{{ item.data.title }}</div>
+          <p class="text-sm text-gray-600">{{ item.date | readableDate }}</p>
+          <p class="text-gray-700">
+            {{ item.templateContent | section | safe }}
+          </p>
+        </div>
+        <div class="p-2">
+          {%- for tag in item.data.tags -%}
+            {% if tag != 'post' %}
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ '#' + tag }}</span>
+            {% endif %}
+          {%- endfor -%}
+        </div>
       </div>
-      <div class="px-6 pt-2 pb-2">
-        {%- for tag in item.data.tags -%}
-          {% if tag != 'post' %}
-            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ '#' + tag }}</span>
-          {% endif %}
-        {%- endfor -%}
-      </div>
-    </div>
     </a>
     
     {# <li class="mt-6">

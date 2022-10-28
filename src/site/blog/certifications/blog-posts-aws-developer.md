@@ -1,7 +1,7 @@
 ---
 title: AWS Associate Developer
 date: 2020-09-10
-thumbnail_url: https://picsum.photos/id/641/640/480
+thumbnail_url: https://picsum.photos/id/641/320/240
 description:
     AWS Associate Developer Study
 ---

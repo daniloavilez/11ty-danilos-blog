@@ -9,7 +9,7 @@ layout: default
     All of these entries are posts in a collection
   </p>
   {# <ul> #}
-  <div class="flex flex-row justify-between flex-wrap gap-4">
+  <div class="flex justify-around flex-wrap gap-x-2 gap-y-4 mt-2">
   {%- for item in collections.post | reverse -%}
   {% include 'components/post-teaser.njk' %}
   {%- endfor -%}

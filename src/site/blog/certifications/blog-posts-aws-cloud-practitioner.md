@@ -1,7 +1,7 @@
 ---
 title: AWS Cloud Practitioner
 date: 2020-03-09
-thumbnail_url: https://picsum.photos/id/642/640/480
+thumbnail_url: https://picsum.photos/id/642/320/240
 
 ---
 

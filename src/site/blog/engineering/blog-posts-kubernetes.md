@@ -1,7 +1,7 @@
 ---
 title: Kubernetes Notes
 date: 2019-07-16
-thumbnail_url: https://picsum.photos/id/211/640/480
+thumbnail_url: https://picsum.photos/id/211/320/240
 ---
 
 My notes for K8S

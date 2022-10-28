@@ -1,7 +1,7 @@
 ---
 title: Azure Web Services
 date: 2020-09-22
-thumbnail_url: https://picsum.photos/id/640/640/480
+thumbnail_url: https://picsum.photos/id/640/320/240
 tags:
     - post
     - azure

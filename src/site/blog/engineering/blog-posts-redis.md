@@ -1,7 +1,7 @@
 ---
 title: Redis Notes
 date: 2019-07-16
-thumbnail_url: https://picsum.photos/id/220/640/480
+thumbnail_url: https://picsum.photos/id/220/320/240
 ---
 
 My notes for Redis database
