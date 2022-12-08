@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ '/css/styles.css' | url }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+     {% if env.isProd %}
+      <script async 
+        src="https://www.googletagmanager.com/gtag/js?id={{ env.tracking.gtag }}">
+      </script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', '{{ env.tracking.gtag }}');
+      </script>
+    {% endif %}
     <title>{{ title }}</title>
     {% include "social.njk" %}
   </head>
