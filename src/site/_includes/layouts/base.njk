@@ -1,10 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="--header-position:sticky; --content-offset:116px; --header-height:180px;
+ --header-mb:-116px; --avatar-image-transform:translate3d(0rem, 0, 0) scale(1);
+  --avatar-border-transform:translate3d(-0.222222rem, 0, 0) scale(1.77778);
+   --avatar-border-opacity:0; --header-top:0px; --avatar-top:0px;">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ '/css/styles.css' | url }}">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+    {# <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css"> #}
      {% if env.isProd %}
       <script async 
         src="https://www.googletagmanager.com/gtag/js?id={{ env.tracking.gtag }}">
@@ -21,17 +24,22 @@
     <title>{{ title }}</title>
     {% include "social.njk" %}
   </head>
-  <body class="container mx-auto mb-12 lg:max-w-4xl text-gray-700">
-    <div class="reader-bar-start">
+  <body class="flex h-full flex-col bg-zinc-50 dark:bg-black">
+    <div class="relative">
       {% include "header.njk" %}
+      <div class="height: var(--content-offset);"></div>
+      <main>
+        {{ content | safe }}  
+      </main>
+    </div>
+    {% set js %}
+      {% include "js/core.js" %}
+    {% endset %}
+    <script>{{ js | jsmin | safe }}</script>
+    {# <div class="reader-bar-start">
       <div class="content leading-relaxed">
         {{ content | safe }}
-      </div>
-      {% set js %}
-        {% include "js/core.js" %}
-        {% include "js/hello.js" %}
-      {% endset %}
-      <script>{{ js | jsmin | safe }}</script>
+      </div> #}
     </div>
   </body>
 </html>
