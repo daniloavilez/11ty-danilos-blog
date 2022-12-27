@@ -9,15 +9,16 @@
  * If remainder is passed as an argument, we return the rest of the post
  *
  */
-module.exports = function(str, section) {
+module.exports = function (str, section) {
   var content = new String(str);
   var delimit = "\n<!--more-->\n";
   var parts = content.split(delimit);
   var which = section == 'remainder' ? 1 : 0;
-  if(parts.length) {
-    return parts[which];
+  if (parts.length) {
+    var text = parts[which];
+    return text.replace(/(<([^>]+)>)/ig, '');
   } else {
-    return str
+    return str.replace(/(<([^>]+)>)/ig, '')
   }
 }
 

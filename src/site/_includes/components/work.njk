@@ -1,3 +1,34 @@
+{% set works = [
+    {
+        company_name: 'ClearSale',
+        role: 'Tech Manager',
+        start_year: 2021,
+        end_year: 'Present',
+        logo: '/images/clearsale.png'
+    },
+    {
+        company_name: 'Itaú',
+        role: 'Tech Lead',
+        start_year: 2019,
+        end_year: 2021,
+        logo: '/images/itau.png'
+    },
+    {
+        company_name: 'Everis',
+        role: 'Specialist',
+        start_year: 2016,
+        end_year: 2019,
+        logo: '/images/everis.jpeg'
+    },
+    {
+        company_name: 'Capgemini',
+        role: 'C# Developer',
+        start_year: 2013,
+        end_year: 2015,
+        logo: '/images/capgemini.png'
+    }
+] %}
+
 <div class="space-y-10 lg:pl-16 xl:pl-24">
     <div class="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40">
         <h2 class="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
@@ -14,88 +45,31 @@
             </svg>
         <span class="ml-3">Work</span></h2>
         <ol class="mt-6 space-y-4">
-            <li class="flex gap-4">
-                <div
-                    class="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50
-                        dark:bg-zinc-800 dark:ring-0">
-                    <img alt="" src="{{ '/images/clearsale.png' | url }}" width="32"
-                        height="32" decoding="async" class="rounded-full" data-nimg="1" class="h-7 w-7" loading="lazy"
-                        style="color: transparent;">
-                </div>
-                <dl class="flex flex-auto flex-wrap gap-x-2">
-                    <dt class="sr-only">Company</dt>
-                    <dd
-                        class="w-full flex-none text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                        ClearSale</dd>
-                    <dt class="sr-only">Role</dt>
-                    <dd class="text-xs text-zinc-500 dark:text-zinc-400">Tech Manager</dd>
-                    <dt class="sr-only">Date</dt>
-                    <dd class="ml-auto text-xs text-zinc-400 dark:text-zinc-500"
-                        aria-label="2021 until Present"><time datetime="2021">2021</time> <span
-                            aria-hidden="true">—</span> <time datetime="2022">Present</time></dd>
-                </dl>
-            </li>
-            <li class="flex gap-4">
-                <div
-                    class="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-                    <img alt="" src="{{ '/images/itau.png' | url }}" width="28" height="28"
-                        decoding="async" data-nimg="1" class="h-7 w-7" loading="lazy"
-                        style="color: transparent;">
-                </div>
-                <dl class="flex flex-auto flex-wrap gap-x-2">
-                    <dt class="sr-only">Company</dt>
-                    <dd
-                        class="w-full flex-none text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                        Itaú</dd>
-                    <dt class="sr-only">Role</dt>
-                    <dd class="text-xs text-zinc-500 dark:text-zinc-400">Tech Lead</dd>
-                    <dt class="sr-only">Date</dt>
-                    <dd class="ml-auto text-xs text-zinc-400 dark:text-zinc-500"
-                        aria-label="2018 until 2021"><time datetime="2018">2018</time> <span
-                            aria-hidden="true">—</span> <time datetime="2021">2021</time></dd>
-                </dl>
-            </li>
-            <li class="flex gap-4">
-                <div
-                    class="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-                    <img alt="" src="/_next/static/media/facebook.dd9e7d48.svg" width="28"
-                        height="28" decoding="async" data-nimg="1" class="h-7 w-7" loading="lazy"
-                        style="color: transparent;">
-                </div>
-                <dl class="flex flex-auto flex-wrap gap-x-2">
-                    <dt class="sr-only">Company</dt>
-                    <dd
-                        class="w-full flex-none text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                        Facebook</dd>
-                    <dt class="sr-only">Role</dt>
-                    <dd class="text-xs text-zinc-500 dark:text-zinc-400">iOS Software Engineer</dd>
-                    <dt class="sr-only">Date</dt>
-                    <dd class="ml-auto text-xs text-zinc-400 dark:text-zinc-500"
-                        aria-label="2011 until 2014"><time datetime="2011">2011</time> <span
-                            aria-hidden="true">—</span> <time datetime="2014">2014</time></dd>
-                </dl>
-            </li>
-            <li class="flex gap-4">
-                <div
-                    class="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-                    <img alt="" src="/_next/static/media/starbucks.4a5bd050.svg" width="28"
-                        height="28" decoding="async" data-nimg="1" class="h-7 w-7" loading="lazy"
-                        style="color: transparent;">
-                </div>
-                <dl class="flex flex-auto flex-wrap gap-x-2">
-                    <dt class="sr-only">Company</dt>
-                    <dd
-                        class="w-full flex-none text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                        Starbucks</dd>
-                    <dt class="sr-only">Role</dt>
-                    <dd class="text-xs text-zinc-500 dark:text-zinc-400">Shift Supervisor</dd>
-                    <dt class="sr-only">Date</dt>
-                    <dd class="ml-auto text-xs text-zinc-400 dark:text-zinc-500"
-                        aria-label="2008 until 2011"><time datetime="2008">2008</time> <span
-                            aria-hidden="true">—</span> <time datetime="2011">2011</time></dd>
-                </dl>
-            </li>
-        </ol><a
+            {%- for work in works -%}
+                <li class="flex gap-4">
+                    <div
+                        class="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50
+                            dark:bg-zinc-800 dark:ring-0">
+                        <img alt="" src="{{ work.logo | url }}" width="32"
+                            height="32" decoding="async" class="rounded-full" data-nimg="1" class="h-7 w-7" loading="lazy"
+                            style="color: transparent;">
+                    </div>
+                    <dl class="flex flex-auto flex-wrap gap-x-2">
+                        <dt class="sr-only">Company</dt>
+                        <dd
+                            class="w-full flex-none text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                            {{ work.company_name }}</dd>
+                        <dt class="sr-only">Role</dt>
+                        <dd class="text-xs text-zinc-500 dark:text-zinc-400">{{ work.role }}</dd>
+                        <dt class="sr-only">Date</dt>
+                        <dd class="ml-auto text-xs text-zinc-400 dark:text-zinc-500"
+                            aria-label="2021 until Present"><time datetime="2021">{{ work.start_year }}</time> <span
+                                aria-hidden="true">—</span> <time datetime="2022">{{ work.end_year }}</time></dd>
+                    </dl>
+                </li>
+            {%- endfor -%}
+        </ol>
+        <a
             class="inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none bg-zinc-50 font-medium text-zinc-900 hover:bg-zinc-100 active:bg-zinc-100 active:text-zinc-900/60 dark:bg-zinc-800/50 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:active:bg-zinc-800/50 dark:active:text-zinc-50/70 group mt-6 w-full"
             href="/#">Download CV<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"
                 class="h-4 w-4 stroke-zinc-400 transition group-active:stroke-zinc-600 dark:group-hover:stroke-zinc-50 dark:group-active:stroke-zinc-50">
