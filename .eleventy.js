@@ -71,6 +71,7 @@ module.exports = function (eleventyConfig) {
       zone: 'utc'
     }).toFormat('LLLL d, y');
   });
+
   eleventyConfig.addFilter('htmlDate', dateObj => {
     return DateTime.fromJSDate(dateObj, {
       zone: 'utc'
