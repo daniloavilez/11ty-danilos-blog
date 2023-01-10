@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/dark.min.css">
+     
+      <script async 
+        src="https://www.googletagmanager.com/gtag/js?id=G-FFHG60G3R3">
+      </script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-FFHG60G3R3');
+      </script>
+    
+    <title>AWS Solutions Architect Professional</title>
+    <meta property="author" content="Danilo Avilez" />
+<meta property="keywords" content="tech, technology, solution, product, infrastructure, cloud, programming, hack, code" />
+<meta property="description" content="Danilo`s Tech Blog" />
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="daniloavilez" />
+<meta name="twitter:creator" content="@danilo_avilez" />
+<meta property="og:title" content="Danilo Avilez" />
+<meta property="og:type" content="blog"/>
+<meta property="og:url" content="https://avilez.com.br/" />
+
+  </head>
+  <body class="container mx-auto mb-12 lg:max-w-4xl text-gray-700">
+    <div class="reader-bar-start">
+      <header class="flex justify-between bg-teal-500 px-4 py-2 mb-4">
+  <h1 class="text-white font-medium text-2xl">
+    <a href="/">Danilo Avilez</a>
+  </h1>
+  
+  
+    <nav>
+      
+      
+<ul class="flex items-row">
+  
+    <li class="pr-1">
+      <a href="/about" class="nav-tab">
+        About
+      </a>
+    </li>
+  
+    <li class="pr-1">
+      <a href="/blog" class="nav-tab">
+        Blog
+      </a>
+    </li>
+  
+</ul>
+
+    </nav>
+  
+</header>
+
+
+
+
+      <div class="content leading-relaxed">
+        <section>
+  <time value="" class="text-gray-600">January 5, 2023</time>
+  <h1 class="heading">AWS Solutions Architect Professional</h1>
+  <div class="mb-2 text-sm text-gray-600">
+    About 2 min reading time
+  </div>
+  <hr>
+  <aside class="mb-2">
+    <nav class="toc" >
+        <ol><li><a href="#iam">IAM</a><ol><li><a href="#iam-access-analyzer">IAM Access Analyzer</a><ol><li><a href="#iam-access-analyzer-policy-validation">IAM Access Analyzer Policy Validation</a></li><li><a href="#iam-access-analyzer-policy-generation">IAM Access Analyzer Policy Generation</a></li></ol></li><li><a href="#providing-access-to-aws-accounts-owned-by-third-parties">Providing access to AWS Accounts Owned by Third Parties</a><ol><li><a href="#session-tags-in-security-token-service-(sts)">Session Tags in Security Token Service (STS)</a></li><li><a href="#sts-important-apis">STS Important APIs</a></li></ol></li><li><a href="#identity-federation">Identity Federation</a></li></ol></li></ol>
+      </nav>
+  </aside>
+  <hr>
+  <article class="mt-4">
+    <p>My notes for AWS Solutions Architect Professional Exam</p>
+<!--more-->
+<h2 id="iam" tabindex="-1">IAM</h2>
+<p><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_examples.html">Access Policies Examples</a></p>
+<p>PowerUserAccess</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2012-10-17&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Statement&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">&quot;Effect&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Allow&quot;</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;NotAction&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                <span class="hljs-string">&quot;iam:*&quot;</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-string">&quot;organizations:*&quot;</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-string">&quot;account:*&quot;</span>
+            <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">&quot;Resource&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;*&quot;</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>…
+</code></pre>
+<pre><code class="hljs language-json">…   
+    <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Effect&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Allow&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">&quot;iam:CreateServiceLinkedRole&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;iam:DeleteServiceLinkedRole&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;iam:ListRoles&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;organizations:DescribeOrganization”,
+        &quot;</span>account<span class="hljs-punctuation">:</span>ListRegions<span class="hljs-string">&quot;
+    ],
+    &quot;</span>Resource<span class="hljs-string">&quot;: &quot;</span>*<span class="hljs-string">&quot;
+    }
+  ]
+}
+</span></code></pre>
+<p>TODO: Check <code>NotAction</code> reference in order to understand better.</p>
+<ul>
+<li>IAM Policies Condition;</li>
+<li>IAM Policies Variable and Tags;</li>
+</ul>
+<p>Assuming a role resource give up of his own policies.</p>
+<p>TODO: Check <code>IAM Permission Boundaries</code> - <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html">https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html</a></p>
+<h3 id="iam-access-analyzer" tabindex="-1">IAM Access Analyzer</h3>
+<h4 id="iam-access-analyzer-policy-validation" tabindex="-1">IAM Access Analyzer Policy Validation</h4>
+<p>Validates grammar and best practices, review it giving warnings and errors and provide actionable recommendations.</p>
+<h4 id="iam-access-analyzer-policy-generation" tabindex="-1">IAM Access Analyzer Policy Generation</h4>
+<p>Generates IAM Policy based on logs saved on AWS CloudTrail. For example: a Lambda access Kinesis and S3 Bucket it will analyze for 90 days and it will create a policy based on these apis called, it generate least-privilege policy as a suggestion.</p>
+<h3 id="providing-access-to-aws-accounts-owned-by-third-parties" tabindex="-1">Providing access to AWS Accounts Owned by Third Parties</h3>
+<p>For granting acesss to a third party:</p>
+<ul>
+<li>The third party AWS account ID</li>
+<li>An External ID, secret between you and the third party:
+<ul>
+<li>To uniquely associate with the role between you and third party</li>
+<li>Must be provided when defining the trust and when assuming the role</li>
+<li>Must be chosen by the third party</li>
+</ul>
+</li>
+<li>Define permission in the IAM policy</li>
+</ul>
+<h4 id="session-tags-in-security-token-service-(sts)" tabindex="-1">Session Tags in Security Token Service (STS)</h4>
+<p>Tags that you pass when you assume an IAM Role or federate user in STS (aws:PrincipalTag condition).</p>
+<p>Example:<br>
+<img src="2023-01-10-18-15-30.png" alt=""></p>
+<h4 id="sts-important-apis" tabindex="-1">STS Important APIs</h4>
+<ul>
+<li>AssumeRole</li>
+<li>AssumeRoleWithSAML</li>
+<li>AssumeRoleWithWebIdentity</li>
+<li>GetSessionToken</li>
+<li>GetFederationToken</li>
+</ul>
+<h3 id="identity-federation" tabindex="-1">Identity Federation</h3>
+<p>Give users outside of AWS permissions top access AWS resources in your account</p>
+<p><strong>You don’t need to create IAM Users (user management is outside AWS</strong></p>
+<p>Use cases</p>
+<ul>
+<li>A corporate has its own identity system (e.g. Active Directory)</li>
+<li>Web/Mobile application that needs access to AWS resources</li>
+</ul>
+<p>Identity federation flavors:</p>
+<ul>
+<li>SAML 2.0</li>
+<li>Custom Identity Broker</li>
+<li>Web Identity Federation With(out) Amazon Cognito</li>
+<li>Single Sign-on (SSO)</li>
+</ul>
+  </article>
+  <!-- up button -->
+  <div>
+    <button
+      id="upBtn"
+      aria-label="go to top"
+      style="position:fixed; width:32px; height:32px; border-radius:50%; border:none; background-color:black; right:32px; bottom:32px; color:white; focus:outline-none; cursor:pointer; transition-duration:500ms; opacity:0; pointer-events:none;"
+    ><i class="arrow up"></i></button>
+  </div>
+  <style>
+  .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  </style>
+  <script>
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 250) {
+      upBtn.style.opacity = 1;
+      upBtn.style.pointerEvents = 'auto';     
+    }
+    else {
+      upBtn.style.opacity = 0;
+      upBtn.style.pointerEvents = 'none';
+    }
+  })
+
+  upBtn.addEventListener('click', () => {
+    let start = document.querySelector('.reader-bar-start')
+    start.scrollIntoView({behavior: "smooth"})
+  })
+  </script>
+  <!-- reader bar -->
+  <div id="readerBarContainer" style="height:4px;width:100%;background-color:#fff;position:fixed;top:0px;left:0;z-index:100;transition:0.2s;">
+    <div id="readerBar" style="height:4px;width:0;background-color:rgb(20 184 166);position:fixed;top:0px;left:0;z-index:200;transition:0.2s;"></div>
+  </div>
+  <script>
+    let winH = window.innerHeight;
+    const content = document.querySelector('.reader-bar-start');
+
+    let contentH = content.offsetHeight;
+    let contentS = contentH - winH;
+    let readerBar = document.getElementById('readerBar');
+    window.addEventListener('load', () => {
+      document.addEventListener ('scroll', updateBar);
+    })
+    window.addEventListener('resize', redefine)
+
+    function redefine() {
+      winH = window.innerHeight;
+      contentH = content.offsetHeight;
+      contentS = contentH - winH;
+      updateBar();
+    }
+
+    function updateBar() {
+      const pagePos = window.scrollY; 
+      const updatedBar = pagePos * 100 / contentS;
+      readerBar.style.width = updatedBar + "%";
+    }
+  </script>
+  <div class="mt-12 pt-4 text-gray-600 text-sm border-t border-gray-300">
+    <p>
+      This page is part of the <a href="/blog">blog</a> section.
+    </p>
+  </div>
+</section>
+
+      </div>
+      
+      <script>function btnHandler(e,n){e=document.querySelector(e);e&&e.addEventListener("click",function(e){e.preventDefault(),n()},!1)}btnHandler(".btn-log",function(){console.log("👋 Oh, hello there you!")});</script>
+    </div>
+  </body>
+</html>
+
+
+
