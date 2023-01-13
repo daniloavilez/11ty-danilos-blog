@@ -1,7 +1,7 @@
 ---
 title: AWS Solutions Architect Professional
 date: 2023-01-05
-thumbnail_url: https://picsum.photos/id/766/320/240
+thumbnail_url: https://picsum.photos/id/772/320/240
 
 ---
 
