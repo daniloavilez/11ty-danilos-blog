@@ -69,12 +69,12 @@
   <time value="" class="text-gray-600">January 5, 2023</time>
   <h1 class="heading">AWS Solutions Architect Professional</h1>
   <div class="mb-2 text-sm text-gray-600">
-    About 2 min reading time
+    About 3 min reading time
   </div>
   <hr>
   <aside class="mb-2">
     <nav class="toc" >
-        <ol><li><a href="#iam">IAM</a><ol><li><a href="#iam-access-analyzer">IAM Access Analyzer</a><ol><li><a href="#iam-access-analyzer-policy-validation">IAM Access Analyzer Policy Validation</a></li><li><a href="#iam-access-analyzer-policy-generation">IAM Access Analyzer Policy Generation</a></li></ol></li><li><a href="#providing-access-to-aws-accounts-owned-by-third-parties">Providing access to AWS Accounts Owned by Third Parties</a><ol><li><a href="#session-tags-in-security-token-service-(sts)">Session Tags in Security Token Service (STS)</a></li><li><a href="#sts-important-apis">STS Important APIs</a></li></ol></li><li><a href="#identity-federation">Identity Federation</a></li></ol></li></ol>
+        <ol><li><a href="#iam">IAM</a><ol><li><a href="#iam-access-analyzer">IAM Access Analyzer</a><ol><li><a href="#iam-access-analyzer-policy-validation">IAM Access Analyzer Policy Validation</a></li><li><a href="#iam-access-analyzer-policy-generation">IAM Access Analyzer Policy Generation</a></li></ol></li><li><a href="#providing-access-to-aws-accounts-owned-by-third-parties">Providing access to AWS Accounts Owned by Third Parties</a><ol><li><a href="#session-tags-in-security-token-service-(sts)">Session Tags in Security Token Service (STS)</a></li><li><a href="#sts-important-apis">STS Important APIs</a></li></ol></li><li><a href="#identity-federation">Identity Federation</a></li><li><a href="#aws-organizations">AWS Organizations</a><ol><li><a href="#features">Features</a></li><li><a href="#reserved-instances-(ri)">Reserved Instances (RI)</a></li><li><a href="#moving-accounts">Moving Accounts</a></li><li><a href="#aws-service-control-policies-(scp)">AWS Service Control Policies (SCP)</a></li><li><a href="#aws-iam-identity-center">AWS IAM Identity Center</a></li><li><a href="#aws-control-tower">AWS Control Tower</a></li><li><a href="#aws-resource-access-manager-(ram)">AWS Resource Access Manager (RAM)</a></li></ol></li></ol></li></ol>
       </nav>
   </aside>
   <hr>
@@ -164,6 +164,80 @@
 <li>Web Identity Federation With(out) Amazon Cognito</li>
 <li>Single Sign-on (SSO)</li>
 </ul>
+<p>AWS Directory Services - AD Connector<br>
+AWS Directory Services - Simple AD (Lower cost, only to small to medium businesses)</p>
+<h3 id="aws-organizations" tabindex="-1">AWS Organizations</h3>
+<p>Root Organizational Unit (OU)<br>
+Management Account<br>
+Member Account</p>
+<p>(Only for created accounts within AWS Organizations) In order to Management Account make changes in Member Account, it is created automatically in each member account a role called <strong>OrganizationAccountAccessRole</strong>, management account assume this role and gain full administrator permissions.</p>
+<h4 id="features" tabindex="-1">Features</h4>
+<ul>
+<li>
+<p>Consolidated billing features:</p>
+<ul>
+<li>Consolidated billing across all accounts;</li>
+<li>Pricing benefits from aggregated usage;</li>
+</ul>
+</li>
+<li>
+<p>All features:</p>
+<ul>
+<li>Includes consolidated billing features, <strong>SCP</strong>??;</li>
+<li>Invited accounts must approve enabling all features;</li>
+<li>Ability to apply an SCP to prevent member accounts from leaving the org;</li>
+</ul>
+</li>
+</ul>
+<h4 id="reserved-instances-(ri)" tabindex="-1">Reserved Instances (RI)</h4>
+<p>All accounts can receive hourly cost benefit of RI that are purchased by other account.</p>
+<p>Payer account (management account) of an organization can turn off RI and Saving Plans.</p>
+<h4 id="moving-accounts" tabindex="-1">Moving Accounts</h4>
+<ol>
+<li>Remove member account from Old OU</li>
+<li>Invite this member account from new OU</li>
+</ol>
+<h4 id="aws-service-control-policies-(scp)" tabindex="-1">AWS Service Control Policies (SCP)</h4>
+<p>Restricting Tags with IAM Policies<br>
+- ForAllValues<br>
+- ForAnyValues<br>
+SCP to deny a Region. e.g.: Deny dynamodb on Region us-east-1<br>
+Using SCP to Restrict Creating Resources withou appropriate Tags<br>
+Tag Policies = consistent tags, you can define tag keys and allowed values for each one<br>
+AI Services Opt-out policies<br>
+Backup policies</p>
+<h4 id="aws-iam-identity-center" tabindex="-1">AWS IAM Identity Center</h4>
+<p>Successor of SSO</p>
+<p>One login (single sign-on)<br>
+Identity providers</p>
+<p>You can set Permission Sets. e.g. Permission set can be Full Access associated with one or more Organization Unit (OU) and a group can be assigned in this permission set.</p>
+<p>We can create a group called <em>Developers</em> which have full access to Development OU and ReadOnlyAccess to Production OU.</p>
+<h4 id="aws-control-tower" tabindex="-1">AWS Control Tower</h4>
+<p>Easy to set up and govern a secure and compliant multi-account based on best practices.</p>
+<p>Control Tower runs on top of AWS Organizations.</p>
+<p><em>Account Factory</em> = Automates account provisioning, Enables create pre-approved baselines and configuration options for AWS Accounts.</p>
+<p>Account Factory uses AWS Service Catalog to provision new AWS Accounts.</p>
+<p><em>GuardRail</em> = Provides ongoing governance for your Control Tower environment.</p>
+<p>Example: it can identify a non-compliant resources (e.g. untagged resources), in this case can notify through AWS SNS an admin or a Lambda which action is add tag to these resources.</p>
+<p>Guarrals Levels</p>
+<ul>
+<li>
+<p>Mandatory: Automatically enabled and enforced by Control Tower. e.g. Disallow public Read access to the Log Archive account.</p>
+</li>
+<li>
+<p>Strongly Recommended: Based on AWS best practices. e.g. Enable encryption for EBS volumes attached to EC2 instances.</p>
+</li>
+<li>
+<p>Elective: Commonly used by enterprises. e.g. Disallow delete actions without MFA in S3 buckets.</p>
+</li>
+</ul>
+<h4 id="aws-resource-access-manager-(ram)" tabindex="-1">AWS Resource Access Manager (RAM)</h4>
+<p>Share AWS resources between AWS Accounts.</p>
+<p><img src="2023-01-13-10-21-56.png" alt=""></p>
+<p><em>Managed Prefix List</em> = A set of one or more CIDR blocks. Makes it easier to configure and maintain Security Groups and RouteTables.</p>
+<p><img src="2023-01-13-10-24-08.png" alt=""></p>
+<p>Route 53 Outbound Resolver is shareable as well.</p>
+<p><img src="2023-01-13-10-26-29.png" alt=""></p>
   </article>
   <!-- up button -->
   <div>
