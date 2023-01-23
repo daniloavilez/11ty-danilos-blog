@@ -201,3 +201,46 @@ _Managed Prefix List_ = A set of one or more CIDR blocks. Makes it easier to con
 Route 53 Outbound Resolver is shareable as well.
 
 ![](2023-01-13-10-26-29.png)
+
+Managed Prefix List = a set of one or more CIDR blocks
+Customer-Managed Prefix List and AWS managed prefix list
+
+## Security
+
+### CloudTrail
+
+Provides governance, compliance and audit
+History of events / API calls
+
+SDK, CLI, Console, IAM User & IAM Roles are tracked.
+
+CloudTrail Insights = try to detect unusual activity in account.
+
+Retentions = Events are stored for 90 days, to keep events beyond this period you may use S3 and Athena
+
+React to CloudTrail Events:
+ - Fastest is AWS EventBridge
+ - Delivery in CloudWatch Logs
+ - Delivery in S3
+
+### Key Management Service (KMS)
+
+Symmetric keys = use the same key for encryption and decryption
+Asymmetric keys = use public key for encryption and decrypts with private key, public key can be share it with other users outside of AWS.
+
+Types of KMS Keys
+  - Customer managed keys
+  - AWS managed keys
+  - AWS owned keys = Use by some AWS services to protect resources, used in multiple AWS accounts, can't view use track or audit.
+
+Key Material Origin
+
+KMS
+Creates and manages the key material in its own key store
+
+External
+We import the key material into the KMS key, we're responsible for securing the key material outside of AWS
+
+Custom Key Store
+KMS created the key material in a custom key store.
+
