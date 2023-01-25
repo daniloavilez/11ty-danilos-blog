@@ -78,7 +78,7 @@
       </nav>
   </aside>
   <hr>
-  <article class="mt-4">
+  <article class="mt-4 space-y-3">
     <p>My notes for AWS Solutions Architect Professional Exam</p>
 <!--more-->
 <h2 id="iam" tabindex="-1">IAM</h2>
@@ -104,14 +104,14 @@
         <span class="hljs-string">&quot;iam:CreateServiceLinkedRole&quot;</span><span class="hljs-punctuation">,</span>
         <span class="hljs-string">&quot;iam:DeleteServiceLinkedRole&quot;</span><span class="hljs-punctuation">,</span>
         <span class="hljs-string">&quot;iam:ListRoles&quot;</span><span class="hljs-punctuation">,</span>
-        <span class="hljs-string">&quot;organizations:DescribeOrganization”,
-        &quot;</span>account<span class="hljs-punctuation">:</span>ListRegions<span class="hljs-string">&quot;
-    ],
-    &quot;</span>Resource<span class="hljs-string">&quot;: &quot;</span>*<span class="hljs-string">&quot;
-    }
-  ]
-}
-</span></code></pre>
+        <span class="hljs-string">&quot;organizations:DescribeOrganization&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;account:ListRegions&quot;</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Resource&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;*&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
 <p>TODO: Check <code>NotAction</code> reference in order to understand better.</p>
 <ul>
 <li>IAM Policies Condition;</li>
@@ -151,7 +151,7 @@
 </ul>
 <h3 id="identity-federation" tabindex="-1">Identity Federation</h3>
 <p>Give users outside of AWS permissions top access AWS resources in your account</p>
-<p><strong>You don’t need to create IAM Users (user management is outside AWS</strong></p>
+<p><strong>You don’t need to create IAM Users (user management is outside AWS)</strong></p>
 <p>Use cases</p>
 <ul>
 <li>A corporate has its own identity system (e.g. Active Directory)</li>

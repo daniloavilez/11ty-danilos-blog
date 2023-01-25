@@ -78,7 +78,7 @@
       </nav>
   </aside>
   <hr>
-  <article class="mt-4">
+  <article class="mt-4 space-y-3">
     <p>My notes for AWS Associate Developer Exam</p>
 <!--more-->
 <h2 id="aws-cli-%26-sdk" tabindex="-1">AWS CLI &amp; SDK</h2>
@@ -91,9 +91,7 @@
 }
 </code></pre>
 <p>How to use <code>JMESPath</code>:</p>
-<blockquote>
 <p>Update the result</p>
-</blockquote>
 <pre><code class="hljs language-bash">aws ec2 describe-instances --query <span class="hljs-string">&#x27;Reservations[*].Instances[*].[Placement.AvailabilityZone | [0], InstanceId, State.Name]&#x27;</span>
 {
     <span class="hljs-string">&quot;Reservations&quot;</span>: []
