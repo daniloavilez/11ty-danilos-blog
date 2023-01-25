@@ -26,7 +26,7 @@ aws ec2 describe-instances
 
 How to use `JMESPath`:
 
-> Update the result
+Update the result
 
 ```bash
 aws ec2 describe-instances --query 'Reservations[*].Instances[*].[Placement.AvailabilityZone | [0], InstanceId, State.Name]'

@@ -37,7 +37,7 @@ PowerUserAccess
         "iam:CreateServiceLinkedRole",
         "iam:DeleteServiceLinkedRole",
         "iam:ListRoles",
-        "organizations:DescribeOrganization”,
+        "organizations:DescribeOrganization",
         "account:ListRegions"
     ],
     "Resource": "*"
@@ -95,7 +95,7 @@ Example:
 
 Give users outside of AWS permissions top access AWS resources in your account
 
-**You don't need to create IAM Users (user management is outside AWS**
+**You don't need to create IAM Users (user management is outside AWS)**
 
 Use cases
 

@@ -2,6 +2,12 @@
 @tailwind base;
 /* purgecss end ignore */
 
+/* purgecss start ignore */
+@tailwind components;
+/* purgecss end ignore */
+
+@tailwind utilities;
+
 /*
   Content sections conventions
 */
@@ -14,20 +20,60 @@ p+p {
   @apply mt-4;
 }
 
+blockquote {
+  @apply relative;
+  @apply p-4;
+  @apply text-xl;
+  @apply italic;
+  @apply border-l-4;
+  @apply bg-neutral-100;
+  @apply text-neutral-600;
+  @apply border-neutral-500;
+}
+
 /*
   Global headings conventions
 */
 h1 {
+  @apply text-5xl;
   @apply text-gray-900;
   @apply font-semibold;
+  @apply mt-2;
 }
 
-h2,
-h3,
-h4 {
+h2 {
+  @apply text-4xl;
   @apply text-gray-900;
   @apply font-semibold;
-  @apply mt-2
+  @apply mt-2;
+}
+
+h3 {
+  @apply text-3xl;
+  @apply text-gray-900;
+  @apply font-semibold;
+  @apply mt-2;
+}
+
+h4 {
+  @apply text-2xl;
+  @apply text-gray-900;
+  @apply font-semibold;
+  @apply mt-2;
+}
+
+h5 {
+  @apply text-xl;
+  @apply text-gray-900;
+  @apply font-semibold;
+  @apply mt-2;
+}
+
+h6 {
+  @apply text-base;
+  @apply text-gray-900;
+  @apply font-semibold;
+  @apply mt-2;
 }
 
 @screen md {
@@ -108,9 +154,3 @@ code:not([class]) {
 .mb--4 {
   margin-bottom: -1rem;
 }
-
-/* purgecss start ignore */
-@tailwind components;
-/* purgecss end ignore */
-
-@tailwind utilities;
