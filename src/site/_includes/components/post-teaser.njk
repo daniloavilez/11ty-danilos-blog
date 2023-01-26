@@ -1,22 +1,16 @@
-    <a href="{{ item.url | url }}" class="naked-link">
-      <div class="rounded-md shadow-md">
-        <img class="w-full" src="{{ item.data.thumbnail_url }}" alt="">
-        <div class="p-2">
-          <div class="font-bold text-lg">{{ item.data.title }}</div>
-          <p class="text-sm text-gray-600">{{ item.date | readableDate }}</p>
-          <p class="text-gray-700">
-            {{ item.templateContent | section | safe }}
-          </p>
-        </div>
-        <div class="p-2">
-          {%- for tag in item.data.tags -%}
-            {% if tag != 'post' %}
-              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ '#' + tag }}</span>
-            {% endif %}
-          {%- endfor -%}
-        </div>
+    
+    <div class="w-full">
+      <div class="px-2">
+        <a href="{{ item.url | url }}" class="text-lg font-bold">
+          {{ item.data.title }}
+        </a>
+        <p class="text-sm text-gray-600">{{ item.date | readableDate }}</p>
+        <p class="text-gray-700">
+          {{ item.templateContent | section | safe }}
+        </p>
       </div>
-    </a>
+    </div>
+    <hr />
     
     {# <li class="mt-6">
       <time value="{{ item.date }}" class="text-gray-600">{{ item.date | readableDate }}</time>
