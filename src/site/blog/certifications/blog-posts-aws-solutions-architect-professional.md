@@ -1,8 +1,7 @@
 ---
 title: AWS Solutions Architect Professional
 date: 2023-01-05
-thumbnail_url: https://picsum.photos/id/772/320/240
-
+private: true
 ---
 
 My notes for AWS Solutions Architect Professional Exam
@@ -238,9 +237,41 @@ Key Material Origin
 KMS
 Creates and manages the key material in its own key store
 
-External
-We import the key material into the KMS key, we're responsible for securing the key material outside of AWS
+**External**
+We import the key material into the KMS key, we're responsible for securing the key material outside of AWS. Bring your license key (BYOK). We must rotate KMS key.
 
 Custom Key Store
 KMS created the key material in a custom key store.
 
+### SSM Parameter Store
+
+Secure storage for configuration and secrets
+
+**Hierarchy**
+Hierarchy as file storage, in tree format, IAM policy can control where it is allowed to access.
+
+|                                   | Standard         | Advanced                               |
+| --------------------------------- | ---------------- | -------------------------------------- |
+| Total number parameters           | 10.000           | 100.000                                |
+| Maximum size of a parameter value | 4 KB             | 8KB                                    |
+| Parameter policies available      | No               | Yes                                    |
+| Cost                              | No charge at all | Charges apply                          |
+| Storage pricing                   | Free             | $0.05 per advanced parameter per month |
+
+### Secrets Manager
+
+Capability to force rotation of secrets every X days
+Share Cross-Accounts. e.g: Dev Account acess Secrets Manager of Security Account
+
+Rotation with Secrets Manager, it's can invoke every 30 days a lambda function in order to change RDS password
+
+Parameter store can be rotated as well with AWS EventBridge invoking a lambda function which will be responsible to change RDS password and change the value of SSM Parameter Store as well.
+
+### SSL - Sever Name Indication (SNI)
+
+SNI solves the problem of loading **multiple SSL certificates onto one web server** (to serve multiple websites)
+
+It's a __newer__ protocol, and requires the client to indicate the hostname of the targer server in the initial SSL handshake.
+
+**Note: It only works for ALB & NLB, Cloudfront**
+**It doesn't work on CLB (older gen)**

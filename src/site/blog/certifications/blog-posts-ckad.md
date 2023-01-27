@@ -1,7 +1,7 @@
 ---
 title: CKAD Notes
 date: 2020-02-27
-thumbnail_url: https://picsum.photos/id/666/320/240
+private: true
 ---
 
 My notes for CKAD Exam

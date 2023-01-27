@@ -1,7 +1,6 @@
 ---
 title: Service Discovery Notes
 date: 2019-01-09
-thumbnail_url: https://picsum.photos/id/700/320/240
 ---
 
 Notes about Service Discovery

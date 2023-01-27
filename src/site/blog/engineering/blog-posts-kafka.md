@@ -1,7 +1,6 @@
 ---
 title: Kafka Notes
 date: 2019-01-09
-thumbnail_url: https://picsum.photos/id/204/320/240
 ---
 
 My notes for Kafka

@@ -1,7 +1,6 @@
 ---
 title: Chaos Engineering Notes
 date: 2019-05-17
-thumbnail_url: https://picsum.photos/id/200/320/240
 ---
 
 My notes for Chaos Engineering
