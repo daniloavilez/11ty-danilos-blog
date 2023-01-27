@@ -275,3 +275,53 @@ It's a __newer__ protocol, and requires the client to indicate the hostname of t
 
 **Note: It only works for ALB & NLB, Cloudfront**
 **It doesn't work on CLB (older gen)**
+
+### AWS Certificate Manager (ACM)
+
+To host public SSL certificates in AWS
+- Buy one and upload it using the CLI
+- Have ACM provision and renew public SSL certificates with no charge.
+
+ACM loads SSL certificates on Load Balancers, CloudFront, APIs on API Gateways.
+
+ACM is a regional service, so if we have a global application, we need to issue an SSL certificate in each region without possibility to copy through regions.
+
+### CloudHSM
+
+HSM stands for Hardware Security Module
+We must manage our own encryption keys
+Good to SSE-C (Server Side Encryption with customer managed keys)
+
+IAM permissions: CRUD an HSM cluster
+CloudHSM Software: Manage the keys and users
+
+[Understanding FIPS 140](https://www.youtube.com/watch?v=qwC7Kgj87T0)
+[FIPS Cryptography playlist](https://www.youtube.com/playlist?list=PLA-8aGQm6tkKkxZL1IDMDItOAa34KZG0e)
+
+### S3 Security
+
+Encryption at rest
+Encryption in transit
+S3 bucket policies
+Pre-signed URLs
+
+VPC endpoint gateway for S3 = way to access S3 bucket inside AWS network
+
+**S3 Object Lock & Glacier Vault Lock**
+
+They both adopt WORM (Write Once Read Many) model.
+
+S3 Object Lock block an object version deleter for a specified amount of time.
+
+Glacier is helpful for compliance and data retention.
+
+**S3 - Access Points**
+
+Each access point get its own DNS and policy.
+- A specific IAM user/group
+- One policy per Access Point
+
+VPC acces points to keys in one bucket, so Sales department access only sales key, Finance department access only finance key.
+
+
+
