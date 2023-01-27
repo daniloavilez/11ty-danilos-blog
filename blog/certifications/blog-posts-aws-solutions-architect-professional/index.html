@@ -70,12 +70,12 @@
   <time value="" class="text-gray-600">January 5, 2023</time>
   <h1 class="heading">AWS Solutions Architect Professional</h1>
   <div class="mb-2 text-sm text-gray-600">
-    About 4 min reading time
+    About 5 min reading time
   </div>
   <hr>
   <aside class="mb-2">
     <nav class="toc" >
-        <ol><li><a href="#iam">IAM</a><ol><li><a href="#iam-access-analyzer">IAM Access Analyzer</a><ol><li><a href="#iam-access-analyzer-policy-validation">IAM Access Analyzer Policy Validation</a></li><li><a href="#iam-access-analyzer-policy-generation">IAM Access Analyzer Policy Generation</a></li></ol></li><li><a href="#providing-access-to-aws-accounts-owned-by-third-parties">Providing access to AWS Accounts Owned by Third Parties</a><ol><li><a href="#session-tags-in-security-token-service-(sts)">Session Tags in Security Token Service (STS)</a></li><li><a href="#sts-important-apis">STS Important APIs</a></li></ol></li><li><a href="#identity-federation">Identity Federation</a></li><li><a href="#aws-organizations">AWS Organizations</a><ol><li><a href="#features">Features</a></li><li><a href="#reserved-instances-(ri)">Reserved Instances (RI)</a></li><li><a href="#moving-accounts">Moving Accounts</a></li><li><a href="#aws-service-control-policies-(scp)">AWS Service Control Policies (SCP)</a></li><li><a href="#aws-iam-identity-center">AWS IAM Identity Center</a></li><li><a href="#aws-control-tower">AWS Control Tower</a></li><li><a href="#aws-resource-access-manager-(ram)">AWS Resource Access Manager (RAM)</a></li></ol></li></ol></li><li><a href="#security">Security</a><ol><li><a href="#cloudtrail">CloudTrail</a></li><li><a href="#key-management-service-(kms)">Key Management Service (KMS)</a></li><li><a href="#ssm-parameter-store">SSM Parameter Store</a></li><li><a href="#secrets-manager">Secrets Manager</a></li><li><a href="#ssl---sever-name-indication-(sni)">SSL - Sever Name Indication (SNI)</a></li></ol></li></ol>
+        <ol><li><a href="#iam">IAM</a><ol><li><a href="#iam-access-analyzer">IAM Access Analyzer</a><ol><li><a href="#iam-access-analyzer-policy-validation">IAM Access Analyzer Policy Validation</a></li><li><a href="#iam-access-analyzer-policy-generation">IAM Access Analyzer Policy Generation</a></li></ol></li><li><a href="#providing-access-to-aws-accounts-owned-by-third-parties">Providing access to AWS Accounts Owned by Third Parties</a><ol><li><a href="#session-tags-in-security-token-service-(sts)">Session Tags in Security Token Service (STS)</a></li><li><a href="#sts-important-apis">STS Important APIs</a></li></ol></li><li><a href="#identity-federation">Identity Federation</a></li><li><a href="#aws-organizations">AWS Organizations</a><ol><li><a href="#features">Features</a></li><li><a href="#reserved-instances-(ri)">Reserved Instances (RI)</a></li><li><a href="#moving-accounts">Moving Accounts</a></li><li><a href="#aws-service-control-policies-(scp)">AWS Service Control Policies (SCP)</a></li><li><a href="#aws-iam-identity-center">AWS IAM Identity Center</a></li><li><a href="#aws-control-tower">AWS Control Tower</a></li><li><a href="#aws-resource-access-manager-(ram)">AWS Resource Access Manager (RAM)</a></li></ol></li></ol></li><li><a href="#security">Security</a><ol><li><a href="#cloudtrail">CloudTrail</a></li><li><a href="#key-management-service-(kms)">Key Management Service (KMS)</a></li><li><a href="#ssm-parameter-store">SSM Parameter Store</a></li><li><a href="#secrets-manager">Secrets Manager</a></li><li><a href="#ssl---sever-name-indication-(sni)">SSL - Sever Name Indication (SNI)</a></li><li><a href="#aws-certificate-manager-(acm)">AWS Certificate Manager (ACM)</a></li><li><a href="#cloudhsm">CloudHSM</a></li><li><a href="#s3-security">S3 Security</a></li></ol></li></ol>
       </nav>
   </aside>
   <hr>
@@ -320,6 +320,39 @@ Share Cross-Accounts. e.g: Dev Account acess Secrets Manager of Security Account
 <p>It’s a <strong>newer</strong> protocol, and requires the client to indicate the hostname of the targer server in the initial SSL handshake.</p>
 <p><strong>Note: It only works for ALB &amp; NLB, Cloudfront</strong><br>
 <strong>It doesn’t work on CLB (older gen)</strong></p>
+<h3 id="aws-certificate-manager-(acm)" tabindex="-1">AWS Certificate Manager (ACM)</h3>
+<p>To host public SSL certificates in AWS</p>
+<ul>
+<li>Buy one and upload it using the CLI</li>
+<li>Have ACM provision and renew public SSL certificates with no charge.</li>
+</ul>
+<p>ACM loads SSL certificates on Load Balancers, CloudFront, APIs on API Gateways.</p>
+<p>ACM is a regional service, so if we have a global application, we need to issue an SSL certificate in each region without possibility to copy through regions.</p>
+<h3 id="cloudhsm" tabindex="-1">CloudHSM</h3>
+<p>HSM stands for Hardware Security Module<br>
+We must manage our own encryption keys<br>
+Good to SSE-C (Server Side Encryption with customer managed keys)</p>
+<p>IAM permissions: CRUD an HSM cluster<br>
+CloudHSM Software: Manage the keys and users</p>
+<p><a href="https://www.youtube.com/watch?v=qwC7Kgj87T0">Understanding FIPS 140</a><br>
+<a href="https://www.youtube.com/playlist?list=PLA-8aGQm6tkKkxZL1IDMDItOAa34KZG0e">FIPS Cryptography playlist</a></p>
+<h3 id="s3-security" tabindex="-1">S3 Security</h3>
+<p>Encryption at rest<br>
+Encryption in transit<br>
+S3 bucket policies<br>
+Pre-signed URLs</p>
+<p>VPC endpoint gateway for S3 = way to access S3 bucket inside AWS network</p>
+<p><strong>S3 Object Lock &amp; Glacier Vault Lock</strong></p>
+<p>They both adopt WORM (Write Once Read Many) model.</p>
+<p>S3 Object Lock block an object version deleter for a specified amount of time.</p>
+<p>Glacier is helpful for compliance and data retention.</p>
+<p><strong>S3 - Access Points</strong></p>
+<p>Each access point get its own DNS and policy.</p>
+<ul>
+<li>A specific IAM user/group</li>
+<li>One policy per Access Point</li>
+</ul>
+<p>VPC acces points to keys in one bucket, so Sales department access only sales key, Finance department access only finance key.</p>
   </article>
   <!-- up button -->
   <div>
