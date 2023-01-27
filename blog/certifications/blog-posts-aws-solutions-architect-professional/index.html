@@ -75,7 +75,7 @@
   <hr>
   <aside class="mb-2">
     <nav class="toc" >
-        <ol><li><a href="#iam">IAM</a><ol><li><a href="#iam-access-analyzer">IAM Access Analyzer</a><ol><li><a href="#iam-access-analyzer-policy-validation">IAM Access Analyzer Policy Validation</a></li><li><a href="#iam-access-analyzer-policy-generation">IAM Access Analyzer Policy Generation</a></li></ol></li><li><a href="#providing-access-to-aws-accounts-owned-by-third-parties">Providing access to AWS Accounts Owned by Third Parties</a><ol><li><a href="#session-tags-in-security-token-service-(sts)">Session Tags in Security Token Service (STS)</a></li><li><a href="#sts-important-apis">STS Important APIs</a></li></ol></li><li><a href="#identity-federation">Identity Federation</a></li><li><a href="#aws-organizations">AWS Organizations</a><ol><li><a href="#features">Features</a></li><li><a href="#reserved-instances-(ri)">Reserved Instances (RI)</a></li><li><a href="#moving-accounts">Moving Accounts</a></li><li><a href="#aws-service-control-policies-(scp)">AWS Service Control Policies (SCP)</a></li><li><a href="#aws-iam-identity-center">AWS IAM Identity Center</a></li><li><a href="#aws-control-tower">AWS Control Tower</a></li><li><a href="#aws-resource-access-manager-(ram)">AWS Resource Access Manager (RAM)</a></li></ol></li></ol></li><li><a href="#security">Security</a><ol><li><a href="#cloudtrail">CloudTrail</a></li><li><a href="#key-management-service-(kms)">Key Management Service (KMS)</a></li></ol></li></ol>
+        <ol><li><a href="#iam">IAM</a><ol><li><a href="#iam-access-analyzer">IAM Access Analyzer</a><ol><li><a href="#iam-access-analyzer-policy-validation">IAM Access Analyzer Policy Validation</a></li><li><a href="#iam-access-analyzer-policy-generation">IAM Access Analyzer Policy Generation</a></li></ol></li><li><a href="#providing-access-to-aws-accounts-owned-by-third-parties">Providing access to AWS Accounts Owned by Third Parties</a><ol><li><a href="#session-tags-in-security-token-service-(sts)">Session Tags in Security Token Service (STS)</a></li><li><a href="#sts-important-apis">STS Important APIs</a></li></ol></li><li><a href="#identity-federation">Identity Federation</a></li><li><a href="#aws-organizations">AWS Organizations</a><ol><li><a href="#features">Features</a></li><li><a href="#reserved-instances-(ri)">Reserved Instances (RI)</a></li><li><a href="#moving-accounts">Moving Accounts</a></li><li><a href="#aws-service-control-policies-(scp)">AWS Service Control Policies (SCP)</a></li><li><a href="#aws-iam-identity-center">AWS IAM Identity Center</a></li><li><a href="#aws-control-tower">AWS Control Tower</a></li><li><a href="#aws-resource-access-manager-(ram)">AWS Resource Access Manager (RAM)</a></li></ol></li></ol></li><li><a href="#security">Security</a><ol><li><a href="#cloudtrail">CloudTrail</a></li><li><a href="#key-management-service-(kms)">Key Management Service (KMS)</a></li><li><a href="#ssm-parameter-store">SSM Parameter Store</a></li><li><a href="#secrets-manager">Secrets Manager</a></li><li><a href="#ssl---sever-name-indication-(sni)">SSL - Sever Name Indication (SNI)</a></li></ol></li></ol>
       </nav>
   </aside>
   <hr>
@@ -266,10 +266,60 @@ Asymmetric keys = use public key for encryption and decrypts with private key, p
 <p>Key Material Origin</p>
 <p>KMS<br>
 Creates and manages the key material in its own key store</p>
-<p>External<br>
-We import the key material into the KMS key, we’re responsible for securing the key material outside of AWS</p>
+<p><strong>External</strong><br>
+We import the key material into the KMS key, we’re responsible for securing the key material outside of AWS. Bring your license key (BYOK). We must rotate KMS key.</p>
 <p>Custom Key Store<br>
 KMS created the key material in a custom key store.</p>
+<h3 id="ssm-parameter-store" tabindex="-1">SSM Parameter Store</h3>
+<p>Secure storage for configuration and secrets</p>
+<p><strong>Hierarchy</strong><br>
+Hierarchy as file storage, in tree format, IAM policy can control where it is allowed to access.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Standard</th>
+<th>Advanced</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total number parameters</td>
+<td>10.000</td>
+<td>100.000</td>
+</tr>
+<tr>
+<td>Maximum size of a parameter value</td>
+<td>4 KB</td>
+<td>8KB</td>
+</tr>
+<tr>
+<td>Parameter policies available</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>No charge at all</td>
+<td>Charges apply</td>
+</tr>
+<tr>
+<td>Storage pricing</td>
+<td>Free</td>
+<td>$0.05 per advanced parameter per month</td>
+</tr>
+</tbody>
+</table>
+<h3 id="secrets-manager" tabindex="-1">Secrets Manager</h3>
+<p>Capability to force rotation of secrets every X days<br>
+Share Cross-Accounts. e.g: Dev Account acess Secrets Manager of Security Account</p>
+<p>Rotation with Secrets Manager, it’s can invoke every 30 days a lambda function in order to change RDS password</p>
+<p>Parameter store can be rotated as well with AWS EventBridge invoking a lambda function which will be responsible to change RDS password and change the value of SSM Parameter Store as well.</p>
+<h3 id="ssl---sever-name-indication-(sni)" tabindex="-1">SSL - Sever Name Indication (SNI)</h3>
+<p>SNI solves the problem of loading <strong>multiple SSL certificates onto one web server</strong> (to serve multiple websites)</p>
+<p>It’s a <strong>newer</strong> protocol, and requires the client to indicate the hostname of the targer server in the initial SSL handshake.</p>
+<p><strong>Note: It only works for ALB &amp; NLB, Cloudfront</strong><br>
+<strong>It doesn’t work on CLB (older gen)</strong></p>
   </article>
   <!-- up button -->
   <div>
