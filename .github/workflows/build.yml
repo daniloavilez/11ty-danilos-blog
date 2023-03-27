@@ -20,6 +20,13 @@ jobs:
 
       - run: yarn build
 
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            ./dist
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
